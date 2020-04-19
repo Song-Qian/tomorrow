@@ -1,0 +1,26 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "baseUrl": "/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "proxy" : {
+    "target": "/api"
+  },
+  "ninject" : {
+      "async" : false
+  },
+  "mysql" : {
+      "client" : "mysql2", 
+      "connection" : {
+          "host" : "localhost",
+          "user" : "root",
+          "password" : "root",
+          "database" : "test"
+      },
+      "useNullAsDefault" : false
+  },
+  "ts": true
+}

@@ -1,0 +1,39 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "strict": true,
+      "jsx": "preserve",
+      "importHelpers" : true,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "esModuleInterop" : true,
+      "allowSyntheticDefaultImports" : true,
+      "noImplicitAny": false,
+      "noImplicitThis": false,
+      "baseUrl" : ".",
+      "sourceMap" : true,
+      "lib": ["esnext", "dom", "ES2015"],
+      "types": ["reflect-metadata"],
+      "stripInternal": true,
+      "declaration": true,
+      "declarationDir": "./lib/types",
+      "rootDir" : "./src",
+      "outDir" : "./lib",
+      "removeComments": true,
+      "allowJs": true,
+      "emitDecoratorMetadata": true,
+      "paths": {
+        "~/*": [
+          "src/*"
+        ]
+      }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "node_modules/vue-tsx-support/enable-check.d.ts"
+  ]
+}
