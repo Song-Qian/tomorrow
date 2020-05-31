@@ -13,11 +13,13 @@ const output = require("./output")
 const rules = require("./rules")
 const resolve = require("./resolve")
 const plugins = require("./plugins")
+const optimization = require('./optimization')
 
 module.exports = merge({}, {
   entry,
   output,
   resolve,
+  optimization,
   plugins: [
     basicExtract,
     skinExtract,

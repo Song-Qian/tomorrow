@@ -11,34 +11,34 @@ export default class {
 
   public static getRouter (): RouteConfig[] {
     let routers: RouteConfig[] = [{
-      name : 'Innocence',
-      path : '/'
+      name : 'tomorrowApp',
+      path : '/',
+      redirect : { name : 'login' },
     },
-      // {
-      //   name : 'home',
-      //   path : '/home',
-      //   components : {
-      //     'home' : () => import('../../View/Home/Home.vue')
-      //   },
-      //   children: [
-      //     {
-      //       name: 'sys',
-      //       path: 'sys',
-      //       components: {
-      //         // (r: NodeRequire) => { require.ensure([], () => { r(require('../../View/Sys/Index.vue')) }, 'sys/index') }
-      //         'sys': () => import('../../View/Sys/Index.vue')
-      //       },
-      //       meta : {
-      //         requiredAuth : true
-      //       }
-      //     }
-      //   ]
-      // },
-      {
-        name : 'unkown',
-        path: '*',
-        redirect: { name : 'Innocence' }
-      }]
+    {
+      name : 'login',
+      path : '/login',
+      component : () => import('~/views/Home/login'),
+        // children: [
+        //   {
+        //     name: 'sys',
+        //     path: 'sys',
+        //     components: {
+        //       // (r: NodeRequire) => { require.ensure([], () => { r(require('../../View/Sys/Index.vue')) }, 'sys/index') }
+        //       'sys': () => import('../../View/Sys/Index.vue')
+        //     },
+        //     meta : {
+        //       requiredAuth : true
+        //     }
+        //   }
+        // ]
+    },
+    // {
+    //   name : 'unkown',
+    //   path: '*',
+    //   redirect: { name : 'tomorrowApp' }
+    // }
+  ]
     return routers
   }
 

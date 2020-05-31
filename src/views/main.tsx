@@ -1,22 +1,26 @@
-import { Component, Vue } from 'vue-property-decorator'
-import { VNode } from 'vue/types/vnode'
+/**
+ * Developer  : SongQian
+ * Time       : 2020-01-05
+ * eMail      : onlylove1172559463@vip.qq.com
+ * Description: App 应用入口
+ */
+import { Component } from 'vue-property-decorator'
+import * as tsx from 'vue-tsx-support'
+import "vue-tsx-support/enable-check"
+
+import '~/assets/styles/index.scss'
 
 @Component
-export default class extends Vue {
+export default class TomorrowApp extends tsx.Component<any> {
 
-  // tslint:disable-next-line: no-multi-spaces
-  name: String =  'SmartBox'
-
-  msg: String = 'Welcome to Your Vue.js App'
-
-  public alert (): void {
-    console.log(this.msg)
+  constructor() {
+    super()
   }
 
-  protected render (): VNode {
+  protected render (): JSX.Element {
     return (
       <div id='app'>
-        <input type='text' v-model={this.msg} />
+          <router-view />
       </div>
     )
   }

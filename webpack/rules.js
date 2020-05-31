@@ -8,28 +8,6 @@
 let path = require("path");
 
 module.exports = function(basicExtract, skinExtract) {
-  //   var vueLoader = {
-  //     test: /\.vue$/,
-  //     loader: 'vue-loader',
-  //     options: {
-  //       loaders: {
-  //           // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-  //           // the "scss" and "sass" values for the lang attribute to the right configs here.
-  //           // other preprocessors should work out of the box, no loader config like this necessary.
-  //           'scss': basicExtract.extract({ fallback : 'vue-style-loader', use : 'css-loader!sass-loader' }),
-  //           'sass': basicExtract.extract({ fallback : 'vue-style-loader', use : 'css-loader!sass-loader' }),
-  //           'css': basicExtract.extract({ fallback : 'vue-style-loader', use : 'css-loader!style-loader' })
-  //       },
-  //       transformToRequire: {
-  //           video: ['src', 'poster'],
-  //           source: 'src',
-  //           img: 'src',
-  //           iframe : 'src',
-  //           embed : 'src',
-  //           image: 'xlink:href'
-  //       }
-  //     }
-  // }
 
     const JS_Loader = {
         test: /\.(js|tsx)$/,
@@ -85,7 +63,6 @@ module.exports = function(basicExtract, skinExtract) {
     }
 
     return [
-        // vueLoader,
         JS_Loader,
         TS_Loader,
         URL_Loaer,

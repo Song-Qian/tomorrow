@@ -10,7 +10,7 @@ import VueRouter, { RouteConfig, Route, RawLocation } from 'vue-router'
 import VueResource from 'vue-resource'
 import { default as localRouter } from './router_config'
 import { Store } from 'vuex'
-import { HttpOptions, Http } from 'vue-resource/types/vue_resource'
+import { HttpOptions } from 'vue-resource/types/vue_resource'
 
 export default class RouterGlobal {
   Router!: RouteConfig[]
@@ -34,19 +34,20 @@ export default class RouterGlobal {
 
   listenersRouter (to: Route, _from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
     try {
-      if (to.meta.requiredAuth && this.$store) {
-        this.$store.dispatch('User/getToken').then(token => {
-          if (!token) {
-            next({ name : 'login', query: { redirect: to.fullPath } })
-          } else {
-            next()
-          }
-        }).catch(() => {
-          next({ name : 'home', query: { redirect: to.fullPath } })
-        })
-      } else {
-        next()
-      }
+      // if (to.meta.requiredAuth && this.$store) {
+      //   this.$store.dispatch('User/getToken').then(token => {
+      //     if (!token) {
+      //       next({ name : 'login', query: { redirect: to.fullPath } })
+      //     } else {
+      //       next()
+      //     }
+      //   }).catch(() => {
+      //     next({ name : 'home', query: { redirect: to.fullPath } })
+      //   })
+      // } else {
+      //   next()
+      // }
+      next();
     } catch (e) {
       console.log(e)
       throw new Error(e)
@@ -79,6 +80,10 @@ export default class RouterGlobal {
     this.$router.beforeEach((to, form, next) => {
       this.listenersRouter.apply(this, [to, form, next])
     })
+    const push = this.$router.push;
+    VueRouter.prototype.push = function(location) {
+      return (push.apply(this, [ location ]) as any).catch(error => error);
+    }
     this.registerSafetyAjax()
     return this.$router
   }

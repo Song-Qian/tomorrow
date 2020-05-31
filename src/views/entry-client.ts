@@ -5,6 +5,7 @@
  * Description: 客户端 Vue渲染入口
  */
 import createRootFactory from './root-simple-factory'
+import { Component } from 'vue-router/types/router'
 
 let { ssr_vue, store, router } = createRootFactory()
 if (Reflect.has(window, '__INITIAL_STATE__')) {
@@ -13,10 +14,10 @@ if (Reflect.has(window, '__INITIAL_STATE__')) {
 
 router.$router.onReady(() => {
   router.$router.beforeResolve((to, from, next) => {
-    const matched = router.$router.getMatchedComponents(to)
-    const prevMatched = router.$router.getMatchedComponents(from)
-    let diffed = false
-    const activated = matched.filter((c, i) => {
+    const matched : Array<Component> = router.$router.getMatchedComponents(to)
+    const prevMatched : Array<Component> = router.$router.getMatchedComponents(from)
+    let diffed : boolean = false
+    const activated: Array<Component> = matched.filter((c: Component, i: number) => {
       return diffed || (diffed = (prevMatched[i] !== c))
     })
     if (!activated.length) {

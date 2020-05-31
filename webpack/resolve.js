@@ -8,7 +8,7 @@
 var path = require("path")
 
 module.exports =  {
-  extensions: ['.ts', '.tsx', '.js'],
+  extensions: ['.ts', '.tsx', '.js', ".scss", ".json"],
   alias: {
       '~' : path.join(__dirname, '../', 'src'),
       'vue$': 'vue/dist/vue.esm.js'

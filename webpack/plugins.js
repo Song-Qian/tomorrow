@@ -4,7 +4,7 @@
  * eMail        :   onlylove1172559463@vip.qq.com
  * Description  :   生产依赖插件配置
  */
-var webpack = require('webpack')
+const webpack = require('webpack')
 // let vueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = function() {
@@ -32,7 +32,7 @@ Description :  基于NodeJS服务端实验性的Vue SSR技术方案，并且支�
         
         var definePlugin = new webpack.DefinePlugin({
             'process.env': {
-              NODE_ENV: '"production"'
+              NODE_ENV: process.env.NODE_ENV === 'development' ?  '""' : '"production"'
             }
         });
 
@@ -53,11 +53,7 @@ Description :  基于NodeJS服务端实验性的Vue SSR技术方案，并且支�
         //     }
         // });
 
-        var loaderPlugin = new webpack.LoaderOptionsPlugin({
-            minimize: true
-        });
-
-        extensionPlugin.push(definePlugin, loaderPlugin);
+        extensionPlugin.push(definePlugin);
     }
 
     return [

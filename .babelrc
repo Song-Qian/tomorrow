@@ -3,10 +3,29 @@
     "@babel/preset-env"
   ],
   "plugins": [
+    // Vue 2.0 JSX的Babel插件
+    // 假设您将Babel与模块捆绑器（例如Webpack）一起使用，因为扩展合并帮助器已作为模块导入以避免重复。
+    // babel-plugin-syntax-jsx
+    // babel-plugin-transform-vue-jsx
+    // babel-helper-vue-jsx-merge-props
+    // babel-preset-env 
     "@babel/plugin-syntax-jsx",
     "transform-vue-jsx",
-    ["@babel/plugin-transform-typescript", { "isTSX" : true, "allowNamespace": true }],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-transform-typescript", { "isTSX" : true, "allowNamespace": true }],
+    // 下面是具有四个类属性的类，将对其进行转换。
+    // class Bork {
+    //    Property initializer syntax
+    //    instanceProperty = "bork";
+    //    boundFunction = () => {
+    //      return this.instanceProperty;
+    //    };
+    //    Static class properties
+    //    static staticProperty = "babelIsCool";
+    //    static staticFunction = function() {
+    //      return Bork.staticProperty;
+    //    };
+    //}
     ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]
 }

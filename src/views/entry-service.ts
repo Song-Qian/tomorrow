@@ -9,12 +9,14 @@ import createRootFactory from './root-simple-factory'
 let { ssr_vue, store, router } = createRootFactory()
 
 export default (context: any) => {
-
+  
   return new Promise((resolve, reject) => {
 
     const r = router.$router
     // tslint:disable-next-line: no-floating-promises
-    r.push(context.url)
+    r.push(context.url).catch(e => {
+      console.log(e);
+    })
 
     r.onReady(() => {
       const matchedComponents = r.getMatchedComponents()

@@ -1,3 +1,4 @@
+import path from 'path'
 import feathers from '@feathersjs/feathers'
 import express, { Application as ExpressFeathers, Router } from '@feathersjs/express'
 import socketio from '@feathersjs/socketio'
@@ -22,15 +23,15 @@ app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended : true }))
 
-app.use('/', express.static('./lib'))
+app.use("/", express.static("./lib", { dotfiles: "ignore", extensions : ['js', 'css', 'jpeg', 'png'] }))
 
 app.configure(express.rest())
 app.configure(socketio())
-const router = express.Router({ strict : true })
 app.configure(routerConf)
-
-router.use(entry)
-app.use('*', router)
+const router = express.Router({ strict : true })
+// router.use(express.static("./", { dotfiles: "ignore", extensions : ['js', 'css', 'jpeg', 'png'] }))
+router.use("/", entry)
+app.use(router)
 
 app.use(express.notFound())
 app.use(express.errorHandler({ logger } as any))
