@@ -59,8 +59,17 @@ import { RepositoryIdentifier } from '../../inject_type'
     return null
   }
 
-  public async getCondition (expression: () => [[string, number]]): Promise<T[]> {
-    throw new Error('Method not implemented.')
+  public async getCondition (t : T): Promise<T[]> {
+    let trx !: Objection.Transaction;
+    try {
+      trx = await transaction.start(this.dbContext);
+      let result = await (this.constructor as any).query(trx).andWhere(t);
+      await trx.commit()
+      return result as T[];
+    } catch (e) {
+      await trx.rollback()
+    }
+    return new Array<T>();
   }
 
   public async getConditionForPage (expression: () => [[string, number]], page: number, limit: number): Promise<T[]> {

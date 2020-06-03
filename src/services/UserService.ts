@@ -24,7 +24,10 @@ export class UserService implements ServiceMethods<UserModel> {
   public async find (params?: Params | undefined): Promise<UserModel[] | Paginated<UserModel>> {
     const me = this
     const repositroy: IBusiness_UnitOfWorkRepositroy<UserModel> =  me.model as User_Repository
-    return repositroy.find()
+    if(!params?.query) {
+      return repositroy.find()
+    }
+    return repositroy.getCondition(params.query as any);
   }
 
   public async get (id: Id, params?: Params | undefined): Promise<UserModel> {

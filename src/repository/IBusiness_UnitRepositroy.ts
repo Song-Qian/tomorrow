@@ -14,7 +14,7 @@ export interface IBusiness_UnitOfWorkRepositroy<T> extends IRepository {
 
   get (id: number | string): Promise<T | null>
 
-  getCondition (expression: () => [[string, number]]): Promise<T[]>
+  getCondition (t : T): Promise<T[]>
 
   getConditionForPage (expression: () => [[string, number]], page: number, limit: number): Promise<T[]>
 

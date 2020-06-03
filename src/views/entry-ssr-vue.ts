@@ -27,7 +27,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
       //require(ssr_server.replace(/\\+/g, '/'))
       //require(ssr_client.replace(/\\+/g, '/'))
       const renderer = createBundleRenderer(JSON.parse(ssr_server), {
-        template: `<!DOCTYPE html><html lang="en"><head><title>tomorrowApp</title>{{{ renderStyles() }}}</head><body><!--vue-ssr-outlet-->{{{ renderScripts() }}}</body></html>`,
+        template: `<!DOCTYPE html><html lang="en"><head><title>tomorrow</title>{{{ renderStyles() }}}</head><body><!--vue-ssr-outlet-->{{{ renderScripts() }}}</body></html>`,
         inject: true,
         runInNewContext: true,
         clientManifest: JSON.parse(ssr_client)

@@ -10,7 +10,7 @@ import VueGlobal from '../utils/vue-router/router_global'
 import { sync } from 'vuex-router-sync'
 import ElementUI from 'element-ui'
 
-// import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 
 import App from './main'
 
