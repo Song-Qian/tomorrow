@@ -18,7 +18,7 @@ export interface IBusiness_UnitOfWorkRepositroy<T> extends IRepository {
 
   getConditionForPage (expression: () => [[string, number]], page: number, limit: number): Promise<T[]>
 
-  getSingleModelForCondition (expression: () => [[string, number]]): Promise<T | null>
+  getSingleModelForCondition (t : T): Promise<T | null>
 
   getCount (): Promise<number>
 
@@ -28,7 +28,7 @@ export interface IBusiness_UnitOfWorkRepositroy<T> extends IRepository {
 
   addList (models: T[]): Promise<number>
 
-  modify (id: number | string): Promise<T | null>
+  modify (t : T): Promise<T | null>
 
   modifyCondition (expression: () => [[string, number]]): Promise<number>
 

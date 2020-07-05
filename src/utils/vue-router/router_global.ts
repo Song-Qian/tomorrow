@@ -34,20 +34,19 @@ export default class RouterGlobal {
 
   listenersRouter (to: Route, _from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
     try {
-      // if (to.meta.requiredAuth && this.$store) {
-      //   this.$store.dispatch('User/getToken').then(token => {
-      //     if (!token) {
-      //       next({ name : 'login', query: { redirect: to.fullPath } })
-      //     } else {
-      //       next()
-      //     }
-      //   }).catch(() => {
-      //     next({ name : 'home', query: { redirect: to.fullPath } })
-      //   })
-      // } else {
-      //   next()
-      // }
-      next();
+      if (to.meta.requiredAuth && this.$store) {
+        this.$store.dispatch('User/hasLogin').then(token => {
+          if (!token) {
+            next({ name : 'login' })
+          } else {
+            next()
+          }
+        }).catch(() => {
+          next({ name : 'login' })
+        })
+      } else {
+        next()
+      }
     } catch (e) {
       console.log(e)
       throw new Error(e)
@@ -55,7 +54,7 @@ export default class RouterGlobal {
   }
 
   registerSafetyAjax () {
-    (Vue as any).http.interceptors.push((_request: HttpOptions, next: () => void) => {
+    (Vue as any).http.interceptors.push((_request: HttpOptions, next: (rsp ?: any) => any) => {
       // this.$store.dispatch('getUserToken').then(token => {
       //     request.headers.set("Status-Tool-Auth_Token",token);
       //     next((response) => {
@@ -72,7 +71,7 @@ export default class RouterGlobal {
       //         return false;
       //     });
       // });
-      next()
+      next();
     })
   }
 

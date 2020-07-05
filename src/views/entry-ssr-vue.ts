@@ -7,11 +7,11 @@
 import { resolve } from 'path'
 import fs from 'fs'
 import { Request, Response, NextFunction } from 'express'
-import { createBundleRenderer, BundleRenderer } from 'vue-server-renderer'
+import { createBundleRenderer } from 'vue-server-renderer'
 import entryService from './entry-service'
 
-export default function (req: Request, res: Response, next: NextFunction) {
-  const context = { url : req.path }
+export default function (req, res: Response, next: NextFunction) {
+  const context = { url : req.path, user : req.session.user || {} }
   // tslint:disable-next-line: no-floating-promises
   entryService(context).then(
     // tslint:disable-next-line: variable-name

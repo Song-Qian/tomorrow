@@ -15,8 +15,7 @@ import { RepositoryIdentifier } from '../../inject_type'
  // tslint:disable-next-line: class-name
  export abstract class Business_UnitRepositroy<T extends Pojo> extends Model implements IBusiness_UnitOfWorkRepositroy<T> {
 
-  @inject(RepositoryIdentifier.knex)
-    protected dbContext !: knex
+  @inject(RepositoryIdentifier.knex) protected dbContext !: knex
 
   static tableName: string
 
@@ -37,6 +36,7 @@ import { RepositoryIdentifier } from '../../inject_type'
       await trx.commit()
       return result
     } catch (e) {
+      console.error(e);
       // tslint:disable-next-line: await-promise
       await trx.rollback()
     }
@@ -53,6 +53,7 @@ import { RepositoryIdentifier } from '../../inject_type'
       // tslint:disable-next-line: no-multi-spaces
       return  result as T
     } catch (e) {
+      console.error(e);
       // tslint:disable-next-line: await-promise
       await trx.rollback()
     }
@@ -67,7 +68,8 @@ import { RepositoryIdentifier } from '../../inject_type'
       await trx.commit()
       return result as T[];
     } catch (e) {
-      await trx.rollback()
+      console.error(e);
+      await trx.rollback();
     }
     return new Array<T>();
   }
@@ -76,8 +78,18 @@ import { RepositoryIdentifier } from '../../inject_type'
     throw new Error('Method not implemented.')
   }
 
-  public async getSingleModelForCondition (expression: () => [[string, number]]): Promise<T | null> {
-    throw new Error('Method not implemented.')
+  public async getSingleModelForCondition (t : T): Promise<T | null> {
+    let trx !: Objection.Transaction;
+    try {
+      trx = await transaction.start(this.dbContext);
+      let result =  await (this.constructor as any).query(trx).findOne(t);
+      await trx.commit();
+      return result;
+    } catch (e) {
+      console.error(e);
+      await trx.rollback()
+    }
+    return null;
   }
 
   public async getCount (): Promise<number> {
@@ -89,15 +101,35 @@ import { RepositoryIdentifier } from '../../inject_type'
   }
 
   public async add (model: T): Promise<T | null> {
-    throw new Error('Method not implemented.')
+    let trx !: Objection.Transaction;
+    try {
+      trx = await transaction.start(this.dbContext);
+      let result = await (this.constructor as any).query(trx).insert(model);
+      await trx.commit();
+      return result;
+    } catch (e) {
+      console.error(e);
+      await trx.rollback();
+    }
+    return null;
   }
 
   public async addList (models: T[]): Promise<number> {
     throw new Error('Method not implemented.')
   }
 
-  public async modify (id: string | number): Promise<T | null> {
-    throw new Error('Method not implemented.')
+  public async modify (t : T): Promise<T | null> {
+    let trx !: Objection.Transaction;
+    try {
+      trx = await transaction.start(this.dbContext);
+      let result = await (this.constructor as any).query(trx).patch(t).where('id', t.id);
+      await trx.commit();
+      return result;
+    } catch (e) {
+      console.error(e);
+      await trx.rollback();
+    }
+    return null;
   }
 
   public async modifyCondition (expression: () => [[string, number]]): Promise<number> {

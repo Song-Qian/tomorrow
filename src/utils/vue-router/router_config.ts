@@ -18,26 +18,19 @@ export default class {
     {
       name : 'login',
       path : '/login',
-      component : () => import('~/views/Home/login'),
-        // children: [
-        //   {
-        //     name: 'sys',
-        //     path: 'sys',
-        //     components: {
-        //       // (r: NodeRequire) => { require.ensure([], () => { r(require('../../View/Sys/Index.vue')) }, 'sys/index') }
-        //       'sys': () => import('../../View/Sys/Index.vue')
-        //     },
-        //     meta : {
-        //       requiredAuth : true
-        //     }
-        //   }
-        // ]
+      component : () => import('~/views/Home/login')
     },
-    // {
-    //   name : 'unkown',
-    //   path: '*',
-    //   redirect: { name : 'tomorrowApp' }
-    // }
+    {
+      name : 'home',
+      path : '/home',
+      component : () => import('~/views/Home/index'),
+      meta : { requiredAuth : true }
+    },
+    {
+      name : 'unkown',
+      path: '*',
+      redirect: { name : 'tomorrowApp' }
+    }
   ]
     return routers
   }

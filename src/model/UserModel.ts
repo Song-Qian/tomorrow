@@ -6,18 +6,17 @@
  */
 
 import 'reflect-metadata'
-import { Model } from 'objection'
 
-export class UserModel extends Model {
+export class UserModel {
 
-  constructor (id = '1', userName = '', password = '', trueName = '' , createTime = 0, type = 0, token = '') {
-    super()
+  constructor (id = '1', userName = '', password = '', trueName = '' , createTime = new Date().getTime(), type = 0, key  = '', token = '') {
     this.id = id
     this.userName = userName
     this.password = password
     this.trueName = trueName
-    this.createTime = createTime
+    this.createTime = createTime;
     this.type = type
+    this.key = key;
     this.token = token
   }
 
@@ -33,11 +32,14 @@ export class UserModel extends Model {
   @Reflect.metadata('trueName', { type : 'string', maxLength : 1024, default : '' })
      public trueName !: string
 
-  @Reflect.metadata('createTime', { type : 'integer', default : 'CURRENT_TIMESTAMP' })
-     public createTime !: number
+  @Reflect.metadata('createTime', { type: 'timestamp', default : null })
+     public createTime !: any
 
   @Reflect.metadata('type', { type : 'integer', default : 1 })
      public type !: number
+
+   @Reflect.metadata('key', { type : 'string', maxLength : 50, default : '' })
+      public key !: string;
 
   @Reflect.metadata('token', { type : 'string', maxLength : 80 })
      public token !: string

@@ -4,7 +4,7 @@
  *  Email       : onlylove1172559463@vip.qq.com
  *  Description : 示例 User状态模块
  */
-import { Getter, Action, Mutation, Module, GetterTree, MutationTree, ActionTree, Store, ActionContext } from 'vuex'
+import { Getter, Module, GetterTree, MutationTree, ActionTree, ActionContext } from 'vuex'
 
 export default class User<S, R> implements Module<S, R> {
 
@@ -12,11 +12,12 @@ export default class User<S, R> implements Module<S, R> {
     return true
   }
 
-  get state (): any {
-    return {
+  get state (): S {
+    return <any> {
       id: '',
-      username: '',
-      password: '',
+      userName: '',
+      trueName : '',
+      type : -1,
       token: ''
     }
   }
@@ -24,19 +25,10 @@ export default class User<S, R> implements Module<S, R> {
   get getters (): GetterTree<S, R> {
     return {
       getToken (state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>): string {
-        return Reflect.get(state as any, 'token')
+        return (<any>state).token;
       },
-      getUsername (state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>): string {
-        return Reflect.get(state as any, 'username')
-      },
-      getPassword (state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>): string {
-        return Reflect.get(state as any, 'password')
-      },
-      getUser (state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>): S {
-        return state
-      },
-      getUserId (state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>): string {
-        return Reflect.get(state as any, 'id')
+      getUser (state : S, getters : Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) : any {
+        return  state;
       }
     }
   }
@@ -44,24 +36,38 @@ export default class User<S, R> implements Module<S, R> {
   get mutations (): MutationTree<S> {
     return {
       setUser (state: S, user: any) {
-        Reflect.set(state as any, 'id', user.id, user)
-        Reflect.set(state as any, 'username', user.username, user)
-        Reflect.set(state as any, 'password', user.password, user)
-        Reflect.set(state as any, 'token', user.token, user)
-        localStorage.setItem('id', user.id)
-        localStorage.setItem('name', user.name)
-        localStorage.setItem('password', user.password)
-        localStorage.setItem('token', user.token)
+        (<any>state).id = user.id;
+        (<any>state).userName = user.userName;
+        (<any>state).trueName = user.trueName;
+        (<any>state).type = user.type;
+        (<any>state).token = user.token;
+        // serialize("id", user.id, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
+        // serialize("userName", user.userName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
+        // serialize("trueName", user.trueName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
+        // serialize("type", user.type, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
+        // serialize("token", user.token, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
+        
+        if(!global.process) {
+          sessionStorage.setItem('id', user.id)
+          sessionStorage.setItem('userName', user.userName)
+          sessionStorage.setItem('trueName', user.trueName)
+          sessionStorage.setItem('type', user.type)
+          sessionStorage.setItem('token', user.token)
+        }
       },
       delUser (state: S) {
-        Reflect.set(state as any, 'id', '')
-        Reflect.set(state as any, 'username', '')
-        Reflect.set(state as any, 'password', '')
-        Reflect.set(state as any, 'token', '')
-        localStorage.setItem('id', '')
-        localStorage.setItem('username', '')
-        localStorage.setItem('password', '')
-        localStorage.setItem('token', '')
+        (<any>state).id = '';
+        (<any>state).userName = '';
+        (<any>state).trueName = '';
+        (<any>state).type = -1;
+        (<any>state).token = '';
+        if(!global.process) {
+          sessionStorage.removeItem('id')
+          sessionStorage.removeItem('userName')
+          sessionStorage.removeItem('trueName')
+          sessionStorage.removeItem('type')
+          sessionStorage.removeItem('token')
+        }
       }
     }
   }
@@ -75,14 +81,17 @@ export default class User<S, R> implements Module<S, R> {
         commit('delUser')
       },
       hasLogin ({ dispatch, commit, getters, rootGetters, rootState }: ActionContext<S, R>) {
-        let user = {
-          id: localStorage.getItem('id'),
-          username: localStorage.getItem('username'),
-          password: localStorage.getItem('password'),
-          token: localStorage.getItem('token')
+        if(!global.process) {
+          let user = {
+            id: sessionStorage.getItem('id'),
+            userName: sessionStorage.getItem('userName'),
+            trueName: sessionStorage.getItem('trueName'),
+            type: sessionStorage.getItem('type'),
+            token: sessionStorage.getItem('token')
+          }
+          commit('setUser', user)
         }
-        commit('setUser', user)
-        return user.token
+        return getters.getToken;
       }
     }
   }

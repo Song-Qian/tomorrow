@@ -6,7 +6,7 @@
  */
 export default class Keys {
 
-    getHex() : string{
+    private getHex() : string{
         let getRandomSHA = function(min, max){
             return Math.floor( Math.random() * (max - min + 1)) + min;
         }
@@ -17,14 +17,14 @@ export default class Keys {
         return n.toString(16);
     }
 
-    getKeySHA() : string{
+    public getKeySHA() : string{
         let key : Array<string> = [];
         for(let i = 0; i < 40; i++)
             key.push(this.getHex());
         return key.join("");
     }
 
-    SHA(charts, cases = false) : string {
+    public SHA(charts, cases = false) : string {
 
         let core_sha1 = function(blockArray){
             let x = blockArray;
@@ -112,7 +112,7 @@ export default class Keys {
         return binb2hex(core_sha1(AlignSHA1(charts)), cases)
     }
 
-    parse({str, key}, cases = false) : string {
+    public parse({str, key}, cases = false) : string {
 
         if(!key || key.length !== 40 || !/^[0-9a-zA-Z]{1,40}$/.test(key))
             throw new Error("加密key不符合使用要求，无法对字符串进行加密运算！");
@@ -133,7 +133,7 @@ export default class Keys {
         return cases ? result.join('').toUpperCase() : result.join('');
     }
 
-    stringify({str, key}, cases = false) : string {
+    public stringify({str, key}, cases = false) : string {
         if(!key || key.length !== 40 || !/^[0-9a-zA-Z]{1,40}$/.test(key))
             throw new Error("加密key不符合使用要求，无法对字符串进行加密运算！");
 

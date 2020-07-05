@@ -8,6 +8,7 @@
 import DependencyResolver from './DependencyResolver'
 import ServiceSynchResolverModule from '../services/resolver_modules/ServiceSynchResolverModule'
 import RepositorySynchResolverModule from '../repository/resolver_modules/RepositorySynchResolverModule'
+import { Application } from '@feathersjs/feathers'
 
 export default class SynchronousResolverNinject extends DependencyResolver {
 

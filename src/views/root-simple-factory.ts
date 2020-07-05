@@ -7,7 +7,7 @@
 import Vue from 'vue'
 import VueStore from '../utils/vuex/Store'
 import VueGlobal from '../utils/vue-router/router_global'
-import { sync } from 'vuex-router-sync'
+// import { sync } from 'vuex-router-sync'
 import ElementUI from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css'
@@ -19,7 +19,7 @@ export default function () {
   Vue.use(ElementUI)
   const store = new VueStore().store
   const router = new VueGlobal(void 0, store)
-  sync(store, router.$router)
+  // sync(store, router.$router)
   // tslint:disable-next-line: variable-name
   const ssr_vue = new Vue({
     store,

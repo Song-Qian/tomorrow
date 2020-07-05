@@ -12,12 +12,26 @@
   "ninject" : {
       "async" : false
   },
+  "io" : {
+    "port" : 3029
+  },
+  "authentication" : {
+    "secret" : "tomorrow_auth",
+    "entity" : "user",
+    "service": "/api/authentication",
+    "authStrategies" : ["jwt"],
+    "jwtOptions" : {
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    }
+  },
   "mysql" : {
       "client" : "mysql2", 
       "connection" : {
           "host" : "localhost",
           "user" : "root",
-          "password" : "root",
+          "password" : "123456",
           "database" : "tomorrow"
       },
       "useNullAsDefault" : false

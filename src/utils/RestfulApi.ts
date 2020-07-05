@@ -20,7 +20,7 @@ class RestfulAddress {
         const url = this.$baseUrl;
         const address = {
             User : {
-                find : `${url}/users`,
+                find : `${url}/users/login`,
             },
         }
         return Object.assign(me, address);

@@ -13,9 +13,10 @@ export default (context: any) => {
   return new Promise((resolve, reject) => {
 
     const r = router.$router
-    // tslint:disable-next-line: no-floating-promises
-    r.push(context.url).catch(e => {
-      console.log(e);
+    store.dispatch('User/login', context.user || {}).then(() => {
+      r.push(context.url).catch(e => {
+        console.log(e);
+      })
     })
 
     r.onReady(() => {

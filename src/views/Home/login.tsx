@@ -4,8 +4,10 @@
  * eMail      : onlylove1172559463@vip.qq.com
  * Description: 登陆页
  */
-import { Component, Ref } from 'vue-property-decorator'
+import { Component, Ref, Inject } from 'vue-property-decorator'
 import * as tsx from 'vue-tsx-support'
+import { mapActions } from 'vuex'
+
 import "vue-tsx-support/enable-check"
 
 import RESTFULAPI from "~/utils/RestfulApi"
@@ -34,24 +36,36 @@ export default class Login extends tsx.Component<any> {
         ]
     }
 
+    @Inject(Symbol.for('socket.io')) socket;
+
     @Ref("loginForm") protected readonly loginForm;
 
-    protected async login(e : MouseEvent) {
-        if(this.$refs.loginForm) {
-            let valid = await (this.$refs.loginForm as any).validate().catch(() => false);
+    public async login(e) {
+        let me = this;
+        if(me.$refs.loginForm) {
+            let valid = await (me.$refs.loginForm as any).validate().catch(() => false);
             if(valid) {
                 var keys = new Keys();
-                let result = await this.$http.get(
+                let result : any = await me.$http.get(
                     (RESTFULAPI.injective.Api as any).User.find, 
-                    { params : { userName : this.user.username, password :  keys.SHA(this.user.password, true) } },
+                    { params : { userName : me.user.username, password :  keys.SHA(me.user.password, true) } },
                     { emulateHTTP: true, emulateJSON: false }
                 );
+
+                if(!result.body.status && result.body.code !== 200) {
+                    return me.$message.error(result.body.message);
+                }
+
+                let { 'User/login' : login } = mapActions(['User/login']);
+                await login.apply(me, [ result.body.data ]);
+                
+                me.$router.push({ name : 'home' })
                 return;
             }
-            this.$message.error("验证未能通过。");
+            me.$message.error("验证未能通过。");
             return;
         }
-        this.$message.error("系统登陆状态异常。");
+        me.$message.error("系统登陆状态异常。");
     }
 
     protected onInputHandler(value : string, form : string) {
@@ -60,20 +74,21 @@ export default class Login extends tsx.Component<any> {
     }
 
     protected render(): JSX.Element {
+        let me = this;
         return (
             <div class="home-login-bg">
                 <div class="login-panel">
                     <div class="login-head"></div>
-                    <el-form ref="loginForm" rules={ this.userRules } model={ this.user }>
+                    <el-form ref="loginForm" rules={ me.userRules } model={ me.user } nativeOnKeydown={ tsx.modifiers.enter(me.login) } >
                         <el-form-item prop="username">
-                            <el-input placeholder="请输入社交称谓" name="username" style="overflow:hidden; border-radius: 20px;" value={ this.user.username } onInput={ (value : string) => this.onInputHandler(value, "username") }>
+                            <el-input placeholder="请输入社交称谓" name="username" style="overflow:hidden; border-radius: 20px;" value={ me.user.username } onInput={ (value : string) => me.onInputHandler(value, "username") }>
                                 <template slot="prepend">
                                     <i class="el-icon-s-custom"></i>
                                 </template>
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="password">
-                            <el-input placeholder="请输入社交密文" name="password" style="overflow:hidden; border-radius: 20px;"  value={ this.user.password } onInput={ (value : string) => this.onInputHandler(value, "password") } show-password>
+                            <el-input placeholder="请输入社交密文" name="password" style="overflow:hidden; border-radius: 20px;"  value={ me.user.password } onInput={ (value : string) => me.onInputHandler(value, "password") } show-password>
                                 <template slot="prepend">
                                     <i class="el-icon-key"></i>
                                 </template>
@@ -81,7 +96,7 @@ export default class Login extends tsx.Component<any> {
                         </el-form-item>
                         <el-form-item>
                             <el-tooltip class="item" effect="dark" content="感谢使用tomorrow平台，该应用不需要注册，请输入您喜欢的社交称谓和密文，系统自动完成登陆。" placement="right">
-                                <el-button style="width: 100%;" type="primary" icon="el-icon-question" onClick={ this.login } round>
+                                <el-button style="width: 100%;" type="primary" icon="el-icon-question" onClick={ me.login } round>
                                     登陆系统
                                 </el-button>
                             </el-tooltip>

@@ -18,11 +18,13 @@ export default function (app: Application) {
   const { target } = app.get('proxy')
   // tslint:disable-next-line: variable-name
   let dependency_injection: DependencyResolver = async ? new AsynchronousResolverNinject() : new SynchronousResolverNinject()
-  let services = dependency_injection.GetServices<ServiceMethods<any>>()
+  let services = dependency_injection.GetServices<any>()
   services.forEach((it: ServiceMethods<any>, index) => {
     // tslint:disable-next-line: variable-name
     let http_net_path = Reflect.getMetadata('RequestMapping', it.constructor)
     app.use(join(target, http_net_path).replace(/[\\]+/g, '/'), it)
+    let service = app.service(join(target, http_net_path).replace(/[\\]+/g, '/'))
+    service.hooks({ after : it.afterHooks || [], before : it.beforeHooks || [], error : it.errorHooks || [] })
   })
   return app
 }

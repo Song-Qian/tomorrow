@@ -8,9 +8,6 @@ import createRootFactory from './root-simple-factory'
 import { Component } from 'vue-router/types/router'
 
 let { ssr_vue, store, router } = createRootFactory()
-if (Reflect.has(window, '__INITIAL_STATE__')) {
-  store.replaceState(Reflect.get(window, '__INITIAL_STATE__'))
-}
 
 router.$router.onReady(() => {
   router.$router.beforeResolve((to, from, next) => {
@@ -30,3 +27,7 @@ router.$router.onReady(() => {
   })
   ssr_vue.$mount('#app')
 })
+
+// if (Reflect.has(window, '__INITIAL_STATE__')) {
+//   store.replaceState(Reflect.get(window, '__INITIAL_STATE__'))
+// }

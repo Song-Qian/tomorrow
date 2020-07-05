@@ -6,7 +6,7 @@
  */
 // tslint:disable-next-line: no-multi-spaces
 import * as  packages from '../module/module_imports'
-import { Module, ModuleTree } from 'vuex'
+import { ModuleTree } from 'vuex'
 
 // tslint:disable-next-line: class-name
 export default class modules<S, R> {
@@ -20,8 +20,8 @@ export default class modules<S, R> {
   }
 
   init () {
-    for (let module of Object.values(packages)) {
-      this.modules[module.constructor.name] = Reflect.construct(module, []) || {}
+    for (let module of Object.keys(packages)) {
+      this.modules[module] = Reflect.construct(packages[module], []) || {}
     }
   }
 
