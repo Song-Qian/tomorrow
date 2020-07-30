@@ -36,8 +36,6 @@ export default class Login extends tsx.Component<any> {
         ]
     }
 
-    @Inject(Symbol.for('socket.io')) socket;
-
     @Ref("loginForm") protected readonly loginForm;
 
     public async login(e) {
@@ -59,7 +57,7 @@ export default class Login extends tsx.Component<any> {
                 let { 'User/login' : login } = mapActions(['User/login']);
                 await login.apply(me, [ result.body.data ]);
                 
-                me.$router.push({ name : 'home' })
+                me.$router.push({ name : 'main' })
                 return;
             }
             me.$message.error("验证未能通过。");

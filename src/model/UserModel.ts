@@ -9,12 +9,13 @@ import 'reflect-metadata'
 
 export class UserModel {
 
-  constructor (id = '1', userName = '', password = '', trueName = '' , createTime = new Date().getTime(), type = 0, key  = '', token = '') {
+  constructor (id = '1', userName = '', password = '', trueName = '' , createTime = new Date().getTime(), type = 0, avatar = '', key  = '', token = '') {
     this.id = id
     this.userName = userName
     this.password = password
     this.trueName = trueName
     this.createTime = createTime;
+    this.avatar = avatar;
     this.type = type
     this.key = key;
     this.token = token
@@ -43,5 +44,8 @@ export class UserModel {
 
   @Reflect.metadata('token', { type : 'string', maxLength : 80 })
      public token !: string
+
+   @Reflect.metadata('avatar', { type : 'string', maxlength : 20 })
+      public avatar !: string;
 
 }

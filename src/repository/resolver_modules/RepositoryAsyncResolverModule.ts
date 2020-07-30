@@ -22,9 +22,10 @@ export default class RepositoryAsyncRssesolverModule extends AsyncContainerModul
   private get loader (): interfaces.AsyncContainerModuleCallBack {
     return async (bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind): Promise<void> => {
       let conf = configuration()()
-      bind<knex>(RepositoryIdentifier.knex).toFunction(knex({ client : conf.mysql.client, connection : conf.mysql.connection })).when((request: interfaces.Request): boolean => {
-        return !request.id
-      })
+      bind<knex>(RepositoryIdentifier.knex).toDynamicValue((ctx: interfaces.Context) => {
+        let conf = configuration()()
+        return knex({ client : conf.mysql.client, connection : conf.mysql.connection, pool : conf.mysql.pool })
+      }).inSingletonScope()
 
       bind<IRepository>(RepositoryIdentifier.UserRepository).to(User_Repository)
     }

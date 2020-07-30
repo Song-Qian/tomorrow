@@ -13,11 +13,6 @@ export default (context: any) => {
   return new Promise((resolve, reject) => {
 
     const r = router.$router
-    store.dispatch('User/login', context.user || {}).then(() => {
-      r.push(context.url).catch(e => {
-        console.log(e);
-      })
-    })
 
     r.onReady(() => {
       const matchedComponents = r.getMatchedComponents()
@@ -30,5 +25,12 @@ export default (context: any) => {
       }).catch(reject)
 
     }, reject)
+
+    store.dispatch('User/login', context.user || {}).then(() => {
+      r.push(context.url).catch(e => {
+        console.log(e);
+      })
+    })
+    
   })
 }

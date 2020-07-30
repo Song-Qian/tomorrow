@@ -21,6 +21,7 @@ class RestfulAddress {
         const address = {
             User : {
                 find : `${url}/users/login`,
+                list : `${url}/users`
             },
         }
         return Object.assign(me, address);

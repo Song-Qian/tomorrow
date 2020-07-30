@@ -2,7 +2,7 @@
  * Developer    :   SongQian
  * Time         :   2019-09-18
  * eMail        :   onlylove1172559463@vip.qq.com
- * Description  :   用户业务类
+ * Description  :   用户登陆业务类
  */
 
 import 'reflect-metadata'
@@ -47,6 +47,7 @@ export class UserLoginService extends AbstructService<UserModel> {
       key : keys.getKeySHA(),
       id : UUID(),
       trueName : '',
+      avatar : 'default-head',
       type : -1,
       token : UUID()
     };
@@ -62,6 +63,7 @@ export class UserLoginService extends AbstructService<UserModel> {
       user.createTime = (result.createTime as Date).getTime();
       user.key = result.key;
       user.type = result.type;
+      user.avatar = result.avatar;
       user.password = result.password;
       await repositroy.modify(user);
       user.key = '';
@@ -72,6 +74,7 @@ export class UserLoginService extends AbstructService<UserModel> {
     if(!result) {
       user.password = keys.parse({ str : user.password, key : user.key }, true);
       user.type = user.userName.toUpperCase() === "SONGQIAN" ? 999 : 1;
+      user.trueName = user.userName;
       await repositroy.add(user);
       user.key = '';
       user.password = '';

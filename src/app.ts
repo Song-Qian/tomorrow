@@ -26,7 +26,7 @@ app.use(session({ secret : uuid(), name : 'tomorrow_sid', genid : uuid, resave: 
 app.use(express.json())
 app.use(express.urlencoded({ extended : true }))
 
-app.use("/", express.static("./lib", { dotfiles: "ignore", extensions : ['js', 'css', 'jpeg', 'png'] }))
+app.use("/", express.static("./lib", { dotfiles: "ignore", extensions : ['js', 'css', 'jpeg', 'png', 'jpg'] }))
 
 app.configure(express.rest(function(req, rsp, next) {
     if(req.path === '/api/users/login' && req.method === "GET") {
@@ -34,10 +34,20 @@ app.configure(express.rest(function(req, rsp, next) {
     }
     express.rest.formatter(req, rsp, next);
 }))
-app.configure(socketio(app.get("io").port, serviceio.bind(app)))
+app.configure(
+    socketio(app.get('io').port, {
+        pingTimeout: app.get('io').pingTimeout,
+        pingInterval: app.get('io').pingInterval,
+        maxHttpBufferSize : app.get('io').maxHttpBufferSize,
+        transports : app.get('io').transports,
+        cookie : app.get('io').cookie,
+        cookiePath : app.get('io').cookiePath,
+        cookieHttpOnly : app.get('io').cookieHttpOnly
+    },
+    serviceio.bind(app))
+)
 app.configure(routerConf)
 const router = express.Router({ strict : true })
-// router.use(express.static("./", { dotfiles: "ignore", extensions : ['js', 'css', 'jpeg', 'png'] }))
 router.use("/", entry)
 app.use(router)
 

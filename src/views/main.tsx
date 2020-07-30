@@ -6,10 +6,10 @@
  */
 import { Component, Provide } from 'vue-property-decorator'
 import * as tsx from 'vue-tsx-support'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import "vue-tsx-support/enable-check"
-import io from 'socket.io-client'
+import io, { Manager } from 'socket.io-client'
 
 import '~/assets/styles/index.scss'
 
@@ -18,15 +18,40 @@ export default class TomorrowApp extends tsx.Component<any> {
 
   constructor() {
     super()
-    this.socket.on("sysonline", this.handlerOnLineEvent.bind(this.socket, this));
-    this.socket.on("sysunline", this.handlerOnLineEvent.bind(this.socket, this));
+    this.SysSocket.on("sysonline", this.handlerOnLineEvent.bind(this.SysSocket, this));
+    this.SysSocket.on("sysunline", this.handlerUnLineEvent.bind(this.SysSocket, this));
   }
 
-  @Provide(Symbol.for('socket.io')) socket = io('ws://localhost:3029');
+  private get SysSocketIO() {
+    let me = this;
+    let { 'User/getToken' : getToken, 'User/getUser' : getuser } = mapGetters(['User/getToken', 'User/getUser']);
+    let token = getToken.apply(me);
+    let u = getuser.apply(me);
+    let id = u.id && u.id.replace(/\-/g, '') || '';
+    return io(`ws://localhost:3029`, { reconnectionDelay : 0, reconnectionDelayMax : 1000, query: { token } });
+  }
+
+  private get WalkieTalkieIO() {
+    let me = this;
+    let { 'User/getToken' : getToken, 'User/getUser' : getuser } = mapGetters(['User/getToken', 'User/getUser']);
+    let token = getToken.apply(me);
+    let u = getuser.apply(me);
+    let id = u.id && u.id.replace(/\-/g, '') || '';
+    return io(`ws://localhost:3029/WalkieTalkie-${id}`, { reconnectionDelay : 0, reconnectionDelayMax : 1000, query: { token } });
+  }
+
+  @Provide(Symbol.for('sys.io')) SysSocket = this.SysSocketIO;
+
+  @Provide(Symbol.for('walkieTalkie.io')) walkieTalkieSocket = this.WalkieTalkieIO;
 
   private handlerOnLineEvent(me, users) {
     let { 'Sys/updateUsers' : updateOnlineUsers } = mapActions(['Sys/updateUsers']);
-    updateOnlineUsers.apply(me, [users]);
+    updateOnlineUsers.apply(me,[users]);
+  }
+
+  private handlerUnLineEvent(me, users) {
+    let { 'Sys/updateUsers' : updateOnlineUsers } = mapActions(['Sys/updateUsers']);
+    updateOnlineUsers.apply(me,[users]);
   }
 
   protected render (): JSX.Element {

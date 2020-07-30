@@ -13,10 +13,10 @@ module.exports = function(basicExtract, skinExtract) {
         test: /\.(js|tsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets:[['@babel/preset-env', { targets :{ node : '12.16.2' } }]]
-          }
+            loader: 'babel-loader',
+            options: {
+                presets:[['@babel/preset-env', { targets :{ node : '12.16.2' } }]]
+            }
         }
     }
 
@@ -28,7 +28,7 @@ module.exports = function(basicExtract, skinExtract) {
     }
 
     const URL_Loaer  = {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url-loader',
         options: {
             limit: 6144,

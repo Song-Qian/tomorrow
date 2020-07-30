@@ -11,7 +11,7 @@
     minimize : process.env.NODE_ENV === 'production',
     minimizer : process.env.NODE_ENV === 'production' ? [
         new TerserPlugin({
-            test: /\.js$/i,
+            test: /\.(js|ts|tsx)$/i,
             exclude : /[\\/]node_modules[\\/]/, //要排除的文件。
             cache : false,  //启用文件缓存
             parallel : true,  //使用多进程并行运行可提高构建速度。
@@ -29,34 +29,33 @@
             }
         })
     ] : [],
-    // splitChunks: {
-    //     chunks : 'all',
-    //     minSize : 100,
-    //     minChunks : 1,
-    //     maxAsyncRequests : 5,
-    //     maxInitialRequests : 5,
-    //     name: true,
-    //     cacheGroups : {
-    //         'vue' : {
-    //             test : /[\\/]node_modules[\\/]vue[\\/]/,
-    //             name : 'vue.runtime',
-    //             priority : 5
-    //         },
-    //         'vue-class-component' : {
-    //             test : /[\\/]node_modules[\\/]vue-class-component[\\/]/,
-    //             name : 'vue-class-component',
-    //             priority : 5
-    //         },
-    //         'vue-tsx-support' : {
-    //             test : /[\\/]node_modules[\\/]vue-tsx-support[\\/]/,
-    //             name : 'vue-tsx-support',
-    //             priority : 5
-    //         },
-    //         'vue-property-decorator' : {
-    //             test : /[\\/]node_modules[\\/]vue-property-decorator[\\/]/,
-    //             name : 'vue-property-decorator',
-    //             priority : 5
-    //         }
-    //     }
-    // }
+    splitChunks: {
+        chunks : 'all',
+        minSize : 100,
+        minChunks : 1,
+        maxAsyncRequests : 5,
+        maxInitialRequests : 5,
+        name: true,
+        cacheGroups : {
+            'vue-all' : {
+                test :  /[\\/]node_modules[\\/](vue|vue\-router|vuex|vue\-resource)[\\/]/i,
+                name : 'vue-all',
+                priority : 1
+            },
+            'vue-tsx' : {
+                test : /[\\/]node_modules[\\/](vue\-tsx\-support|vue\-property\-decorator|vue\-class\-component)[\\/]/i,
+                name : 'vue-tsx',
+                priority : 5
+            },
+            'util' : {
+                test : /[\\/]node_modules[\\/](moment|vuex\-router\-sync|element-ui)[\\/]/i,
+                name : 'util',
+                priority : 3
+            },
+            // 'default' : {
+            //     name : 'vendors',
+            //     priority : 1
+            // }
+        }
+    }
 }

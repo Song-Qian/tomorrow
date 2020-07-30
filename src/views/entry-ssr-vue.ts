@@ -27,7 +27,7 @@ export default function (req, res: Response, next: NextFunction) {
       //require(ssr_server.replace(/\\+/g, '/'))
       //require(ssr_client.replace(/\\+/g, '/'))
       const renderer = createBundleRenderer(JSON.parse(ssr_server), {
-        template: `<!DOCTYPE html><html lang="en"><head><title>tomorrow</title>{{{ renderStyles() }}}</head><body><!--vue-ssr-outlet-->{{{ renderScripts() }}}</body></html>`,
+        template: `<!DOCTYPE html><html lang="en"><head><title>tomorrow</title><meta charset='utf-8'/><meta content='width=width-device, initial-scale=1, user-scalable=no, target-densitydpi=high-dpi' />{{{ renderStyles() }}}</head><body><!--vue-ssr-outlet-->{{{ renderScripts() }}}</body></html>`,
         inject: true,
         runInNewContext: true,
         clientManifest: JSON.parse(ssr_client)

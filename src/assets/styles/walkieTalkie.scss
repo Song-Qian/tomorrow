@@ -1,0 +1,215 @@
+.wt-window {
+    width: 1080px;
+    height: 520px;
+    top : 20%;
+    position: fixed;
+    display: flex;
+    overflow: hidden;
+    flex-flow: column nowrap;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background-color: #cee9e0;
+    left: calc((100% - 1080px) * 0.5);
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,.3);
+
+    &.visibility {
+        transform-style: preserve-3d;
+        animation-name: tomorrow-fade-down;
+        animation-duration: 1s;
+        animation-delay: 0s;
+        animation-iteration-count: 1;
+        animation-fill-mode: none;
+        animation-direction: normal;
+    }
+
+    &.hide {
+        transform-style: preserve-3d;
+        animation-name: tomorrow-fade-up;
+        animation-duration: 1s;
+        animation-delay: 0s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+    }
+
+    > .wt-window-header {
+        width: 100%;
+        padding: 10px;
+        flex: 0 0 80px;
+        cursor: move;
+        user-select: none;
+        box-sizing: border-box;
+        background-color: #e03cff;
+
+        > .wt-window-user-info {
+            height: 100%;
+            width: calc(100% - 130px);
+            display: inline-block;
+            margin-left: 20px;
+            vertical-align: top;
+
+            > * {
+                display: block;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                color: #fff;
+                height: 50%;
+            }
+        }
+
+        > .wt-window-action {
+            height: 100%;
+            width: 50px;
+            display: inline-block;
+            vertical-align: top;
+            
+            > * {
+                float: right;
+                color: #fff;
+                cursor: pointer;
+            }
+        }
+    }
+
+    > .wt-window-body {
+        width: 100%;
+        flex: 0 0 calc(100% - 140px);
+        position: relative;
+        box-sizing: border-box;
+        overflow-y: auto;
+        background-color: #fff;
+        box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,.4);
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            width: 8px;
+            border-radius: 4px;
+            background-color: #b9b9b9;
+        }
+
+        &::-webkit-scrollbar-track {
+            width: 8px;
+            border-radius: 4px;
+            background-color: #eee;
+            box-shadow: inset 1px 0px 3px 0px #cecece;
+        }
+
+        > .wt-empty-message {
+            display: block;
+            width: 220px;
+            color: #fff;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            top: 10px;
+            left: 50%;
+            position: absolute;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+            background-color: #6e6e6e;
+            animation-name: tomorrow-fade-in, tomorrow-fade-out;
+            animation-duration: .3s, .3s;
+            animation-timing-function: linear, linear;
+            animation-delay: 0s, 3s;
+            animation-iteration-count: 0, 1;
+            animation-direction: nowrap, nowrap;
+            animation-fill-mode: none, forwards;
+        }
+
+        > .wt-to-message,
+        > .wt-from-message {
+            width: 100%;
+            padding: 10px 5px;
+            box-sizing: border-box;
+            animation-name: tomorrow-little-down;
+            animation-duration: .5s;
+            animation-delay: 0s;
+            animation-iteration-count: 1;
+            animation-direction: normal;
+            animation-fill-mode: none;
+        }
+
+        > .wt-to-message > .wt-message__content {
+            width: max-content;
+            max-width: 70%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #409EFF;
+            color: #ffffff;
+            font-size: 14px;
+            margin-left: auto;
+            margin-right: 10px;
+            display: block;
+            border-radius: 20px 20px 0px 20px;
+            box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, .3);
+
+            ~ .wt-message-time {
+                width: 100%;
+                color: #a0a0a0;
+                font-size: 14px;
+                text-align: right;
+            }
+        }
+
+        > .wt-from-message > .wt-message__content {
+            width: max-content;
+            max-width: 70%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #e86e90;
+            color: #ffffff;
+            font-size: 14px;
+            margin-left: 10px;
+            margin-right: auto;
+            display: block;
+            border-radius: 20px 20px 20px 0px;
+            box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, .3);
+
+            ~ .wt-message-time {
+                width: 100%;
+                color: #a0a0a0;
+                font-size: 14px;
+                text-align: left;
+            }
+        }
+    }
+
+    > .wt-window-footer {
+        width: 100%;
+        padding: 10px;
+        flex: 0 0 60px;
+        border-top: 1px solid #ccc;
+        box-sizing: border-box;
+        background-color: #fff;
+
+        > .wt-message-box {
+            width: calc(100% - 120px);
+            display: inline-block;
+            vertical-align: top;
+            height: 100%;
+            outline: none;
+            border: 0px solid #fff;
+            text-indent: 2em;
+            background:#ddd;
+            box-sizing: border-box;
+            border-radius: 20px 0px 0px 20px;
+        }
+
+        > .wt-message-send {
+            width: 120px;
+            height: 100%;
+            display: inline-block;
+            vertical-align: top;
+            border: 0px solid #fff;
+            border-radius: 0px 20px 20px 0px;
+            background: #409EFF;
+            color:#fff;
+            outline: none;
+            cursor: pointer;
+        }
+    }
+}

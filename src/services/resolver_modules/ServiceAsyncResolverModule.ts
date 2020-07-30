@@ -7,6 +7,7 @@
 import { AsyncContainerModule, interfaces } from 'inversify'
 import { UserModel } from '../../model/UserModel'
 import { UserLoginService } from '../UserLoginService'
+import { UserService } from '../UserService'
 import { ServiceMethods } from '@feathersjs/feathers'
 import { ServiceIdentifier } from '../../inject_type'
 
@@ -26,6 +27,7 @@ export default class ServiceAsyncResolverModule extends AsyncContainerModule {
     return async (bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind): Promise<void> => {
 
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserLoginService).to(UserLoginService)
+      bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserService).to(UserService)
 
     }
   }

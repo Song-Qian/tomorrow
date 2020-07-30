@@ -54,14 +54,16 @@ import { QueryContext, ModelOptions } from 'objection';
   $beforeInsert(queryContext : QueryContext) {
     (this as any).createTime = (this.constructor as any).fn.now();
     (this as any).type = (this as any).userName.toUpperCase() === "SONGQIAN" ? 999 : 1;
-    (this as any).trueName = (this as any).userName.toUpperCase() === "SONGQIAN" ? "宋骞（作者）" : '';
+    (this as any).trueName = (this as any).userName.toUpperCase() === "SONGQIAN" ? "宋骞（作者）" : (this as any).trueName;
+    (this as any).avatar = (this as any).userName.toUpperCase() === "SONGQIAN" ? 'admin' : (this as any).avatar;
     return super.$beforeInsert(queryContext);
   }
 
   $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     (this as any).createTime = (this.constructor as any).raw("FROM_UNIXTIME(? / 1000)", (this as any).createTime);
     (this as any).type = (this as any).userName.toUpperCase() === "SONGQIAN" ? 999 : 1;
-    (this as any).trueName = (this as any).userName.toUpperCase() === "SONGQIAN" ? "宋骞（作者）" : '';
+    (this as any).trueName = (this as any).userName.toUpperCase() === "SONGQIAN" ? "宋骞（作者）" : (this as any).trueName;
+    (this as any).avatar = (this as any).userName.toUpperCase() === "SONGQIAN" ? 'admin' : (this as any).avatar;
     return super.$beforeUpdate(opt, queryContext);
   }
 }

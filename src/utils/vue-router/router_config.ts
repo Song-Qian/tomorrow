@@ -24,7 +24,15 @@ export default class {
       name : 'home',
       path : '/home',
       component : () => import('~/views/Home/index'),
-      meta : { requiredAuth : true }
+      meta : { requiredAuth : true },
+      children : [
+        { 
+          name : 'main',
+          path : 'main',
+          component : () => import('~/views/Main/index'),
+          meta : { requiredAuth : true },
+        }
+      ]
     },
     {
       name : 'unkown',

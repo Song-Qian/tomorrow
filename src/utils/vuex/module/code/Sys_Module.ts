@@ -22,6 +22,18 @@ export default class Sys<S, R> implements Module<S, R> {
     return {
         getOnlineUser(state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) {
             return (state as any).users
+        },
+        getUserForUseranme(state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>)  : (payload : string) => any {
+          return (payload : string) : any => {
+            let u = (state as any).users && (state as any).users.filter(it => it.userName === payload || it.id === payload);
+            return u;
+          }
+        },
+        hasUserOnline(state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) : (payload : string) => boolean {
+          return (payload : string) : boolean => {
+            let u = (state as any).users && (state as any).users.filter(it => it.userName === payload || it.id === payload);
+            return u && u.length > 0;
+          };
         }
     }
   }
@@ -30,16 +42,16 @@ export default class Sys<S, R> implements Module<S, R> {
   get mutations (): MutationTree<S> {
     return {
         setUsers(state: S, users: Array<any>) {
-            (state as any).users = users;
+          (state as any).users = users;
         }
     }
   }
 
   get actions (): ActionTree<S, R> {
     return {
-        updateUsers({ dispatch, commit, getters, rootGetters, rootState }: ActionContext<S, R>, users : Array<any>) {
-            commit('setUsers', users )
-        }
+      updateUsers({ dispatch, commit, getters, rootGetters, rootState }: ActionContext<S, R>, users : Array<any>) {
+        commit('setUsers', users )
+      }
     }
   }
 

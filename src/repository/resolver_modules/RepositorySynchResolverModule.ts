@@ -25,7 +25,7 @@ export default class RepositorySynchResolverModule extends ContainerModule {
 
       bind<knex>(RepositoryIdentifier.knex).toDynamicValue((ctx: interfaces.Context) => {
         let conf = configuration()()
-        return knex({ client : conf.mysql.client, connection : conf.mysql.connection })
+        return knex({ client : conf.mysql.client, connection : conf.mysql.connection, pool : conf.mysql.pool })
       }).inSingletonScope()
 
       bind<IRepository>(RepositoryIdentifier.UserRepository).to(User_Repository)

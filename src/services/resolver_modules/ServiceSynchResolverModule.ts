@@ -7,6 +7,7 @@
 
 import { ContainerModule, interfaces } from 'inversify'
 import { UserLoginService } from '../UserLoginService'
+import { UserService } from '../UserService'
 import { UserModel } from '../../model/UserModel'
 import { ServiceMethods } from '@feathersjs/feathers'
 import { ServiceIdentifier } from '../../inject_type'
@@ -27,6 +28,7 @@ export default class ServiceSynchResolverModule extends ContainerModule {
     return (bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind): void => {
 
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserLoginService).to(UserLoginService)
+      bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserService).to(UserService)
 
     }
   }

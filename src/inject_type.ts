@@ -8,7 +8,8 @@
 export const ExpressFeathersSymbol = Symbol.for('ExpressFeathers')
 
 export const ServiceIdentifier = {
-  UserLoginService : Symbol.for('UserLoginService')
+  UserLoginService : Symbol.for('UserLoginService'),
+  UserService : Symbol.for('UserService')
 }
 
 export const RepositoryIdentifier = {

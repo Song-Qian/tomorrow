@@ -18,7 +18,9 @@ export default class User<S, R> implements Module<S, R> {
       userName: '',
       trueName : '',
       type : -1,
-      token: ''
+      token: '', 
+      avatar : '',
+      createTime : 0,
     }
   }
 
@@ -41,6 +43,8 @@ export default class User<S, R> implements Module<S, R> {
         (<any>state).trueName = user.trueName;
         (<any>state).type = user.type;
         (<any>state).token = user.token;
+        (<any>state).avatar = user.avatar;
+        (<any>state).createTime = user.createTime;
         // serialize("id", user.id, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
         // serialize("userName", user.userName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
         // serialize("trueName", user.trueName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
@@ -53,6 +57,8 @@ export default class User<S, R> implements Module<S, R> {
           sessionStorage.setItem('trueName', user.trueName)
           sessionStorage.setItem('type', user.type)
           sessionStorage.setItem('token', user.token)
+          sessionStorage.setItem('avatar', user.avatar)
+          sessionStorage.setItem('createTime', user.createTime)
         }
       },
       delUser (state: S) {
@@ -61,12 +67,16 @@ export default class User<S, R> implements Module<S, R> {
         (<any>state).trueName = '';
         (<any>state).type = -1;
         (<any>state).token = '';
+        (<any>state).avatar = '';
+        (<any>state).createTime = 0;
         if(!global.process) {
           sessionStorage.removeItem('id')
           sessionStorage.removeItem('userName')
           sessionStorage.removeItem('trueName')
           sessionStorage.removeItem('type')
           sessionStorage.removeItem('token')
+          sessionStorage.removeItem('avatar')
+          sessionStorage.removeItem('createTime')
         }
       }
     }
@@ -87,7 +97,9 @@ export default class User<S, R> implements Module<S, R> {
             userName: sessionStorage.getItem('userName'),
             trueName: sessionStorage.getItem('trueName'),
             type: sessionStorage.getItem('type'),
-            token: sessionStorage.getItem('token')
+            token: sessionStorage.getItem('token'),
+            avatar: sessionStorage.getItem('avatar'),
+            createTime : sessionStorage.getItem('createTime')
           }
           commit('setUser', user)
         }

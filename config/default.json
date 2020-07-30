@@ -13,7 +13,14 @@
       "async" : false
   },
   "io" : {
-    "port" : 3029
+    "port" : 3029,
+    "pingTimeout" : 5000,
+    "pingInterval" : 600000,
+    "maxHttpBufferSize" : 1048576,
+    "transports" : ["polling", "websocket"],
+    "cookie" : "io",
+    "cookiePath" : "/",
+    "cookieHttpOnly" : true
   },
   "authentication" : {
     "secret" : "tomorrow_auth",
@@ -33,6 +40,10 @@
           "user" : "root",
           "password" : "123456",
           "database" : "tomorrow"
+      },
+      "pool" : {
+        "min" : 0,
+        "max" : 20
       },
       "useNullAsDefault" : false
   },

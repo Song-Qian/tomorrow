@@ -8,7 +8,7 @@
 import { IBusiness_UnitOfWorkRepositroy } from '../IBusiness_UnitRepositroy'
 import knex from 'knex'
 import Objection, { Model, transaction, Pojo } from 'objection'
-import { inject, injectable, named } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { RepositoryIdentifier } from '../../inject_type'
 
 @injectable()
@@ -36,7 +36,6 @@ import { RepositoryIdentifier } from '../../inject_type'
       await trx.commit()
       return result
     } catch (e) {
-      console.error(e);
       // tslint:disable-next-line: await-promise
       await trx.rollback()
     }
@@ -74,8 +73,37 @@ import { RepositoryIdentifier } from '../../inject_type'
     return new Array<T>();
   }
 
-  public async getConditionForPage (expression: () => [[string, number]], page: number, limit: number): Promise<T[]> {
-    throw new Error('Method not implemented.')
+  public async getConditionForPage (expression: () => { [key: string]: any }, page: number, limit: number): Promise<T[]> {
+    let trx !: Objection.Transaction;
+    try {
+      trx = await transaction.start(this.dbContext);
+      let andWhere = expression().andWhere;
+      let orWhere = expression().orWhere;
+      let WhereNot = expression().WhereNot;
+      let orWhereNot = expression().orWhereNot;
+      let queryBuilder = (this.constructor as any).query(trx);
+      if(andWhere) {
+        queryBuilder = queryBuilder.andWhere(andWhere);
+      }
+
+      if(orWhere) {
+        queryBuilder = queryBuilder.orWhere(orWhere);
+      }
+
+      if(WhereNot) {
+        queryBuilder = queryBuilder.orWhereNot(WhereNot);
+      }
+
+      if(orWhereNot) {
+        queryBuilder = queryBuilder.orWhereNot(orWhereNot);
+      }
+      let result = await queryBuilder.limit(limit).offset((page - 1) * limit);
+      return result as T[];
+    } catch(e) {
+      console.error(e);
+      await trx.rollback();
+    }
+    return new Array<T>();
   }
 
   public async getSingleModelForCondition (t : T): Promise<T | null> {

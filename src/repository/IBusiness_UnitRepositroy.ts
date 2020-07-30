@@ -16,13 +16,13 @@ export interface IBusiness_UnitOfWorkRepositroy<T> extends IRepository {
 
   getCondition (t : T): Promise<T[]>
 
-  getConditionForPage (expression: () => [[string, number]], page: number, limit: number): Promise<T[]>
+  getConditionForPage (expression: () => { [key: string]: any }, page: number, limit: number): Promise<T[]>
 
   getSingleModelForCondition (t : T): Promise<T | null>
 
   getCount (): Promise<number>
 
-  getCountForCondinate (expression: () => [[string, number]]): Promise<number>
+  getCountForCondinate (expression: () => { [key: string]: any }): Promise<number>
 
   add (model: T): Promise<T | null>
 
@@ -30,11 +30,11 @@ export interface IBusiness_UnitOfWorkRepositroy<T> extends IRepository {
 
   modify (t : T): Promise<T | null>
 
-  modifyCondition (expression: () => [[string, number]]): Promise<number>
+  modifyCondition (expression: () => { [key: string]: any }): Promise<number>
 
   delete (id: number | string): Promise<T | null>
 
-  deleteCondintion (expression: () => [[string, number]]): Promise<number>
+  deleteCondintion (expression: () => { [key: string]: any }): Promise<number>
 
   order (field: string, hasAsc: boolean): Promise<T[]>
 

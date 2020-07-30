@@ -5,7 +5,6 @@
  * Description  :   生产依赖插件配置
  */
 const webpack = require('webpack')
-// let vueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = function() {
 
