@@ -6,16 +6,30 @@
  */
 
  import * as tsx from 'vue-tsx-support'
- import { Component, Inject } from 'vue-property-decorator'
+ import { Component, Inject, Provide } from 'vue-property-decorator'
  import { mapGetters } from 'vuex'
  import "vue-tsx-support/enable-check"
-
+ 
+ import io from 'socket.io-client'
 
 
  @Component
  export default class Home extends tsx.Component<any> {
 
+    
+
+    @Provide(Symbol.for('walkieTalkie.io')) walkieTalkieSocket = this.WalkieTalkieIO;
+
     @Inject(Symbol.for('sys.io')) SysSocket;
+
+    private get WalkieTalkieIO() {
+        let me = this;
+        let { 'User/getToken' : getToken, 'User/getUser' : getuser } = mapGetters(['User/getToken', 'User/getUser']);
+        let token = getToken.apply(me);
+        let u = getuser.apply(me);
+        let id = u && u.id.replace(/\-/g, '') || '';
+        return io(`ws://localhost:3029/WalkieTalkie-${id}`, { reconnectionDelay : 0, reconnectionDelayMax : 1000, transports : ["websocket"], query: { token }});
+    }
     
     protected mounted() : void {
         let  me = this;

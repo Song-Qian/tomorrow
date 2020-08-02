@@ -17,21 +17,10 @@
     "pingTimeout" : 5000,
     "pingInterval" : 600000,
     "maxHttpBufferSize" : 1048576,
-    "transports" : ["polling", "websocket"],
+    "transports" : ["websocket"],
     "cookie" : "io",
     "cookiePath" : "/",
     "cookieHttpOnly" : true
-  },
-  "authentication" : {
-    "secret" : "tomorrow_auth",
-    "entity" : "user",
-    "service": "/api/authentication",
-    "authStrategies" : ["jwt"],
-    "jwtOptions" : {
-      "issuer": "feathers",
-      "algorithm": "HS256",
-      "expiresIn": "1d"
-    }
   },
   "mysql" : {
       "client" : "mysql2", 

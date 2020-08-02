@@ -108,6 +108,14 @@
                         background: linear-gradient(270deg,  rgba(255, 0, 0, .7), rgba(255, 165, 0, .7), rgba(255, 255, 0, .7), rgba(0, 255, 0, .7), rgba(0, 127, 255, .7), rgba(0, 0, 255, .7), rgba(140, 0, 255, .7));
                         animation: tomorrow-slide-right .3s linear 0s 1 normal none;
                     }
+
+                    > .home-message-badge > sup {
+                        position:absolute;
+                        top: 0px;
+                        right: 0px;
+                        right: 0px;
+                        transform: translateY(0%) translateX(100%);
+                    }
                 }
             }
         }

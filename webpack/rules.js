@@ -23,7 +23,7 @@ module.exports = function(basicExtract, skinExtract) {
     const TS_Loader = { 
       test: /\.ts$/,
       loader: 'ts-loader',
-      exclude: /node_modules/,
+      exclude: /node_modules/
       // options: { appendTsSuffixTo: [/\.vue$/] }
     }
 
@@ -32,7 +32,7 @@ module.exports = function(basicExtract, skinExtract) {
         loader: 'url-loader',
         options: {
             limit: 6144,
-            name: 'assets/Images/[name].[ext]?cache=[hash:8]'
+            name: 'assets/images/[name].[ext]?cache=[hash:8]'
         }
     }
 

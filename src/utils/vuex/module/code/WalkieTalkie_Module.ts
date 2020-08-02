@@ -33,14 +33,21 @@ export default class WalkieTalkie<S, R> implements Module<S, R> {
       },
       getAllNewWalkieMessageSize(state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) : number {
         let size = 0;
-        for(let walkie of (<any>state).walkies) {
-            size += walkie.filter(it => it.type === 'from' && !it.ready).length;
+        for(let walkie of Object.values<Array<any>>((<any>state).walkies)) {
+            size += walkie && walkie.filter(it => it.type === 'from' && !it.ready).length || 0;
         }
         return size;
       },
       getWalkieMessages(state: S, getters: Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) : (payload: string) => Array<any> {
         return (fromId : string) : Array<any> => {
-          return (<any>state).walkies[fromId] || [];
+          let messgaesList = (<any>state).walkies[fromId] || [];
+          messgaesList = messgaesList.map(it => { 
+            if(it.type === "from") {
+              it.ready = true;
+            }
+            return it;
+          })
+          return messgaesList;
         }
       }
     }

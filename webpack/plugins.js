@@ -5,6 +5,8 @@
  * Description  :   生产依赖插件配置
  */
 const webpack = require('webpack')
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function() {
 
@@ -24,6 +26,13 @@ Description :  基于NodeJS服务端实验性的Vue SSR技术方案，并且支�
         test : /(\.tsx|js)/,
         exclude : /node_modules/
     });
+
+    const copyPlugin = new CopyWebpackPlugin({ 
+        patterns : [
+            { from :  path.join(__dirname, '../src/assets/images'), to : 'assets/images' }
+        ]
+    })
+    
 
     var extensionPlugin = [];
 
@@ -58,6 +67,7 @@ Description :  基于NodeJS服务端实验性的Vue SSR技术方案，并且支�
     return [
         // commonsChunkPlugin,
         // vueLoader,
+        copyPlugin,
         bannerPlugin,
         ...extensionPlugin
     ]

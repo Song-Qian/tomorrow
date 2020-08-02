@@ -35,12 +35,12 @@
 
     private hasSearch : boolean = false;
 
-    private handlerOnSearch(e) {
+    private handlerOnSearch(e: string) {
         let me = this;
         me.search = e;
     }
 
-    private handlerOnTabsChange(type) {
+    private handlerOnTabsChange(type: string) {
         let me = this;
         if(type === 'article') {
             return me.$message({ 
@@ -66,20 +66,27 @@
         }
     }
 
-    protected async ToWalkieTalkie(event : MouseEvent, id : string) : Promise<void> {
+    protected ToWalkieTalkie(e : MouseEvent, id : string) : void {
         let me = this;
-        let { "User/getUser" : user } = mapGetters(['User/getUser']);
-        let u = user.apply(me);
-        
-        if(u.id === id) {
-            me.$message({  type : "error",  customClass : "tomorrow-message",  message : "系统拒绝你和自己聊天！",  dangerouslyUseHTMLString : true });
-            return void 0;
-        }
-        if(me.walkies.indexOf(id) > -1) {
-            me.$message({  type : "error",  customClass : "tomorrow-message",  message : "聊天窗口已打开！",  dangerouslyUseHTMLString : true });
-            return void 0;
-        }
-        me.walkies.push(id);
+        let fn = () : void => { 
+            let { "User/getUser" : user } = mapGetters(['User/getUser']);
+            let u = user.apply(me);
+            
+            if(u.id === id) {
+                me.$message({  type : "error",  customClass : "tomorrow-message",  message : "系统拒绝你和自己聊天！",  dangerouslyUseHTMLString : true });
+                return void 0;
+            }
+            if(me.walkies.indexOf(id) > -1) {
+                me.$message({  type : "error",  customClass : "tomorrow-message",  message : "聊天窗口已打开！",  dangerouslyUseHTMLString : true });
+                return void 0;
+            }
+            me.walkies.push(id);
+        };
+        Object.defineProperty(fn, '__proto__', {
+            value : Function.prototype,
+            enumerable : false
+        })
+        tsx.modifiers.stop(fn)(e);
     }
 
     protected receiveMessage(fromId: string, message: string, time : any) {
@@ -88,9 +95,20 @@
         commitNewWalkie.apply(me, [{ fromId, type : 'from', message : message, ready : false }]);
     }
 
-    protected handlerWalkieClose(id) {
+    protected handlerWalkieClose(id: any) {
         let me = this;
         me.walkies = me.walkies.filter(it => it !== id);
+    }
+
+    protected handlerOpenSearch(e : MouseEvent) : void {
+        let me = this;
+        let fn = () : void => { me.hasSearch = true };
+        Object.defineProperty(fn, '__proto__', {
+            value : Function.prototype,
+            enumerable : false
+        })
+        tsx.modifiers.stop(fn)(e);
+        
     }
 
     protected mounted() {
@@ -104,28 +122,38 @@
 
     protected render(): JSX.Element {
         let me = this;
-        let searchTrigger = ( me.hasSearch ? null : <li onClick={ tsx.modifiers.stop(() => me.hasSearch = true) }><i class="el-icon-search"></i></li> );
-        let { "User/getUser" : user } = mapGetters(['User/getUser']);
+        let { 
+                "User/getUser" : user, 
+                'WalkieTalkie/getAllNewWalkieMessageSize' : getAllNewWalkieMessageSize, 
+                "Sys/hasUserOnline" : hasUserOnline, 
+                'Sys/getUserForUseranme' : getUserForUseranme,
+                'WalkieTalkie/getNewWalkieMessageSize' : getNewWalkieMessageSize
+        } = mapGetters(['User/getUser', 'Sys/hasUserOnline', 'Sys/getUserForUseranme', 'WalkieTalkie/getAllNewWalkieMessageSize', 'WalkieTalkie/getNewWalkieMessageSize']);
         let u = user.apply(me);
-        let { "Sys/hasUserOnline" : hasUserOnline, 'Sys/getUserForUseranme' : getUserForUseranme } = mapGetters(['Sys/hasUserOnline', 'Sys/getUserForUseranme']);
         let online = hasUserOnline.apply(me)('songqian');
         let admin = getUserForUseranme.apply(me)('songqian');
+        let allNewMessageSize = getAllNewWalkieMessageSize.apply(me);
+        let adminNewMessageSize = admin.length ? getNewWalkieMessageSize.apply(me)(admin[0].id.replace(/\-/g, '')) : 0;
 
         let userList = me.users.map(it => {
                 let online = hasUserOnline.apply(me)(it.userName);
+                let newMessageSize = getNewWalkieMessageSize.apply(me)(it.id.replace(/\-/g, ''));
                 return (<div class="home-main-users-item">
-                    <i class={[ 'tomorrow-avatar', `tomorrow-${it.avatar}-icon`, online ? '' : 'tomorrow-avatar-unline' ]}></i>
+                    <el-badge class='home-message-badge' value={ newMessageSize } max={99} hidden={ newMessageSize === 0 } >
+                        <i class={[ 'tomorrow-avatar', `tomorrow-${it.avatar}-icon`, online ? '' : 'tomorrow-avatar-unline' ]}></i>
+                    </el-badge>
                     <div class="home-main-user-info">
                         <span>{ it.trueName }</span>
                         <small>愿你前程似锦，未来可期​。</small>
                     </div>
                     <div class='home-main-user-action'>
-                        <i class='el-icon-chat-dot-square' onClick={ tsx.modifiers.stop((e) => { me.ToWalkieTalkie(e, it.id) })  }></i>
+                        <i class='el-icon-chat-dot-square' onClick={ (e) => me.ToWalkieTalkie(e, it.id) }></i>
                         <i class='el-icon-phone-outline' onClick={ () => me.$message({ type : "info", customClass : "tomorrow-message",  message : "功能正努力研发...",  }) }></i>
                     </div>
                 </div>)
             }
         )
+        let searchTrigger = ( me.hasSearch ? null : <li onClick={ me.handlerOpenSearch }><i class="el-icon-search"></i></li> );
 
         let walkieWindows = me.walkies.map(it => {
             return (
@@ -140,7 +168,9 @@
                     </div>
                     <ul class="home-main-pages">
                         <li class={ me.type === 'ad' ? 'active' : '' } onClick={ () => me.handlerOnTabsChange('ad') }>我的广场</li>
-                        <li class={ me.type === 'user' ? 'active' : '' } onClick={ () => me.handlerOnTabsChange('user') }>用户</li>
+                        <li class={ me.type === 'user' ? 'active' : '' } onClick={ () => me.handlerOnTabsChange('user') }>
+                            <el-badge class='home-message-badge' value={ allNewMessageSize } max={99} hidden={ allNewMessageSize === 0 } >用户</el-badge>
+                        </li>
                         <li class={ me.type === 'article' ? 'active' : '' } onClick={ () => me.handlerOnTabsChange('article') }>话题</li>
                         { searchTrigger }
                     </ul>
@@ -170,13 +200,15 @@
                     </li>
                     <li class="home-main-users">
                         <div class="home-main-users-item">
-                            <i class={[ 'tomorrow-avatar', `tomorrow-admin-icon`, online ? '' : 'tomorrow-avatar-unline' ]}></i>
+                            <el-badge class='home-message-badge' value={ adminNewMessageSize } max={99} hidden={ adminNewMessageSize === 0 } >
+                                <i class={[ 'tomorrow-avatar', 'tomorrow-admin-icon', online ? '' : 'tomorrow-avatar-unline' ]}></i>
+                            </el-badge>
                             <div class="home-main-user-info">
                                 <span>宋骞（作者）</span>
                                 <small>愿你前程似锦，未来可期​。</small>
                             </div>
                             <div class='home-main-user-action'>
-                                <i class='el-icon-chat-dot-square' onClick={ tsx.modifiers.stop((e) => { me.ToWalkieTalkie(e, admin.length && admin[0].id || '') }) }></i>
+                                <i class='el-icon-chat-dot-square' onClick={ (e) => me.ToWalkieTalkie(e, admin.length && admin[0].id || '') }></i>
                                 <i class='el-icon-phone-outline'></i>
                             </div>
                         </div>

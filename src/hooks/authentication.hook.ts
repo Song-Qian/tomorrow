@@ -6,7 +6,6 @@
  */
 
  import { Hook, HookContext } from '@feathersjs/feathers'
- import { parse } from 'cookie'
 
  export default () : Hook => {
     return (context : HookContext) => {
@@ -14,10 +13,10 @@
         if(result.status && result.code === 200 ) {
             let users : Map<string, any> = app.get("userLists");
             let rootNsp = (app as any).io.of('/');
-            let cookie = params.headers?.cookie ? parse(params.headers?.cookie) : {};
-            if(!users.has(cookie.io)) {
-                users.set(cookie.io, result.data);
-            }
+            // let cookie = params.headers?.cookie ? parse(params.headers?.cookie) : {};
+            // if(!users.has(cookie.io)) {
+            //     users.set(cookie.io, result.data);
+            // }
             rootNsp.emit('sysonline', [...users.values()]);
         }
         return context;

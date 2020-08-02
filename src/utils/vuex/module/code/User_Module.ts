@@ -5,6 +5,7 @@
  *  Description : 示例 User状态模块
  */
 import { Getter, Module, GetterTree, MutationTree, ActionTree, ActionContext } from 'vuex'
+import Vue from 'vue'
 
 export default class User<S, R> implements Module<S, R> {
 
@@ -30,7 +31,10 @@ export default class User<S, R> implements Module<S, R> {
         return (<any>state).token;
       },
       getUser (state : S, getters : Getter<S, R>, rootState: R, rootGetters: Getter<S, R>) : any {
-        return  state;
+        if((<any>state).token) {
+          return  <any>state;
+        }
+        return  null;
       }
     }
   }
@@ -45,11 +49,6 @@ export default class User<S, R> implements Module<S, R> {
         (<any>state).token = user.token;
         (<any>state).avatar = user.avatar;
         (<any>state).createTime = user.createTime;
-        // serialize("id", user.id, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
-        // serialize("userName", user.userName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
-        // serialize("trueName", user.trueName, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
-        // serialize("type", user.type, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
-        // serialize("token", user.token, { maxAge : 0, path : "/", httpOnly : true,  expires : new Date() });
         
         if(!global.process) {
           sessionStorage.setItem('id', user.id)
