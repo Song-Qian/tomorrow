@@ -126,7 +126,7 @@
 
         > .home-main-content {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 60px);
             list-style: none;
             display: flex;
             overflow: hidden;
@@ -147,8 +147,14 @@
                 flex: 0 0 100%;
                 height: 100%;
                 padding: 0px 10px;
+                overflow-y: auto;
                 box-sizing: border-box;
                 transition: all .3s linear;
+                scrollbar-color: transparent transparent;
+
+                &::-webkit-scrollbar {
+                    width: 0px;
+                }
 
                 .home-main-propagate {
                     width: 100%;

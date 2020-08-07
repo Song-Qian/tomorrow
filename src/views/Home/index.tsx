@@ -48,17 +48,20 @@
 
     protected render(): JSX.Element {
         let me = this;
-        let { "User/getUser" : user, "Piazzas/hasNewPublish" : hasNewPublish } = mapGetters(['User/getUser', 'Piazzas/hasNewPublish']);
+        let { "User/getUser" : user, "Piazzas/hasNewPublish" : hasNewPublish, 'WalkieTalkie/getAllNewWalkieMessageSize' : getAllNewWalkieMessageSize } = mapGetters(['User/getUser', 'Piazzas/hasNewPublish', 'WalkieTalkie/getAllNewWalkieMessageSize']);
         let u = user.apply(me);
+        let allNewMessageSize = getAllNewWalkieMessageSize.apply(me);
         return (
             <div class="home-main-bg">
                 <div class="home-main-head">
-                    <i class={[ 'tomorrow-avatar', `tomorrow-${u.avatar}-icon` ]}></i>
-                    <span style='margin-left: 20px'>{ u.trueName }</span>
+                    <i class={[ 'tomorrow-avatar', `tomorrow-${u && u.avatar || 'default-head'}-icon` ]}></i>
+                    <span style='margin-left: 20px'>{ u && u.trueName || '系统在打盹' }</span>
                 </div>
                 <div class="home-main-menu">
                     <el-menu mode="vertical" text-color="#fff" background-color="transparent" menu-trigger="click" style="border-right: 0px solid #fff;" router>
-                        <el-menu-item class="home-main-item" index="/home/main">主页</el-menu-item>
+                        <el-menu-item class="home-main-item" index="/home/main">
+                        <el-badge class='home-message-badge' value={ allNewMessageSize } max={99} hidden={ allNewMessageSize === 0 } >主页</el-badge>
+                        </el-menu-item>
                         <el-menu-item class="home-main-item" index="/home/piazza"><el-badge class="home-message-badge" hidden={ !hasNewPublish.apply(me) } is-dot>广场</el-badge></el-menu-item>
                         <el-menu-item class="home-main-item"  nativeOnClick={ (e) => window.open('tencent://message/?uin=1172559463&Site=http://vps.shuidazhe.com&Menu=yes', '_blank') }>联系作者</el-menu-item>
                         <el-menu-item class="home-main-item" index="/home/settings">设置</el-menu-item>

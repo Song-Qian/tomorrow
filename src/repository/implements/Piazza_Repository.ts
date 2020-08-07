@@ -101,7 +101,7 @@ export class Piazza_Repository extends Business_UnitRepositroy<PiazzaModel> {
     
           if(orderBy) {
             for(let [field, order] of orderBy) {
-              queryBuilder = queryBuilder.orderBy(field, order);
+              queryBuilder = queryBuilder.orderBy(field, order || 'asc');
             }
           }
           let result = await queryBuilder.limit(limit).offset((page - 1) * limit);

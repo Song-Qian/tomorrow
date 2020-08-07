@@ -7,12 +7,13 @@
 
  import * as tsx from 'vue-tsx-support'
  import { Component, Inject } from 'vue-property-decorator'
- import { mapGetters, mapActions } from 'vuex'
+ import { mapGetters } from 'vuex'
  import moment from 'moment'
  import RESTFULAPI from '~/utils/RestfulApi'
 
  import "vue-tsx-support/enable-check"
  import { UserModel } from '~/model/UserModel'
+ import { PiazzaModel } from '~/model/PiazzaModel'
  import Walkie from '~/views/Main/walkie'
 
  @Component({ components : { Walkie } })
@@ -33,6 +34,8 @@
 
     private walkies : Array<any> = [];
 
+    private piazzaList : Array<PiazzaModel> = [];
+
     private hasSearch : boolean = false;
 
     private handlerOnSearch(e: string) {
@@ -51,6 +54,18 @@
             });
         }
         me.type = type;
+    }
+
+    protected stopSearchHidden(e : MouseEvent) {
+        let me = this;
+        let fn = () : void => { 
+            return void 0;
+        };
+        Object.defineProperty(fn, '__proto__', {
+            value : Function.prototype,
+            enumerable : false
+        })
+        tsx.modifiers.stop(fn)(e);
     }
 
     protected async getUserList() : Promise<void> {
@@ -105,9 +120,25 @@
         
     }
 
+    protected async getPiazzaList() {
+        let me = this;
+        let { "User/getUser" : user } = mapGetters(['User/getUser']);
+        let u = user.apply(me);
+        let result : any = await me.$http.get(
+            (RESTFULAPI.injective.Api as any).Piazza,
+            { params : { uid : u.id, page : 1,  limit :  999 } },
+            { emulateHTTP: false, emulateJSON: false }
+        )
+        
+        if(result.body.status && result.body.code === 200) {
+            me.piazzaList = result.body.data;
+        }
+    }
+
     protected mounted() {
         let me = this;
         me.getUserList();
+        me.getPiazzaList();
         document.onclick = (e) => {
             me.hasSearch = false;
         }
@@ -153,11 +184,29 @@
                 <walkie id={ it } on-handler-window-close={ me.handlerWalkieClose } walkie-talkie-socket={ me.walkieTalkieSocket }></walkie>
             )
         })
+
+        let ad_list = me.piazzaList.map((it : any) => (
+                <el-card shadow="always" class="home-main-ad-card">
+                    <el-row type="flex" justify="center" align="middle">
+                        <el-col span={10}><i class={[ 'tomorrow-avatar', `tomorrow-${it.user.avatar}-icon` ]}></i><span style='margin-left: 20px; color: #fff;'>{ it.user.trueName }</span></el-col>
+                        <el-col span={10}></el-col>
+                        <el-col span={4} style="text-align: right; color: #fff;">{ moment(new Date(it.createTime / 1)).fromNow() }</el-col>
+                    </el-row>
+                    <el-row type="flex" justify="center" align="middle">
+                        <el-col span={24}>
+                            <p style='color: #fff;'>{ it.text }</p>
+                        </el-col>
+                    </el-row>
+                    <div class="home-main-propagate" style={{ backgroundImage: `url(${ it.image })` }}></div>
+                </el-card>
+            )
+        );
+
         return (
             <div>
                 <div class="home-main-header">
                     <div class={ ['home-main-search', me.hasSearch ? 'hasSearch' : '' ] }>
-                        <el-input placeholder="搜索" onInput={ me.handlerOnSearch }></el-input>
+                        <el-input placeholder="搜索" onInput={ me.handlerOnSearch } nativeOnClick={ me.stopSearchHidden }></el-input>
                     </div>
                     <ul class="home-main-pages">
                         <li class={ me.type === 'ad' ? 'active' : '' } onClick={ () => me.handlerOnTabsChange('ad') }>我的广场</li>
@@ -170,6 +219,7 @@
                 </div>
                 <ul class={['home-main-content', me.type === 'user' ? 'users' : '']}>
                     <li class="home-main-ad">
+                        { ad_list }
                         <el-card shadow="always" class="home-main-ad-card">
                             <el-row type="flex" justify="center" align="middle">
                                 <el-col span={10}><i class={[ 'tomorrow-avatar', `tomorrow-${u.avatar}-icon` ]}></i><span style='margin-left: 20px; color: #fff;'>{ u.trueName }</span></el-col>
@@ -182,13 +232,6 @@
                                 </el-col>
                             </el-row>
                             <div class="home-main-propagate" style={{ backgroundImage: "url(/assets/images/tomorrow.jpg)" }}></div>
-                            {/* <el-row type="flex" justify="center" align="middle">
-                                <el-col span="24">
-                                    <i class="el-icon-star-off" style='margin-left: 10px; cursor: pointer;' />
-                                    <i class="el-icon-position" style='margin-left: 10px; cursor: pointer;' />
-                                    <i class="el-icon-chat-dot-square" style='margin-left: 10px; cursor: pointer;' />
-                                </el-col>
-                            </el-row> */}
                         </el-card>
                     </li>
                     <li class="home-main-users">

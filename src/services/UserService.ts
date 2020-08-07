@@ -14,6 +14,7 @@
  import { RepositoryIdentifier } from '../inject_type'
  import { User_Repository } from '~/repository/implements/User_Repository'
  import { IBusiness_UnitOfWorkRepositroy } from '~/repository/IBusiness_UnitRepositroy'
+import Keys from '~/utils/Keys-SHA-ES6'
 
  @injectable()
  @Reflect.metadata('RequestMapping', '/users')
@@ -57,7 +58,26 @@
   }
 
   public async update (id: Id, data: UserModel, params?: Params | undefined): Promise<UserModel | UserModel[]> {
-    throw new Error('Method not implemented.')
+    let me = this;
+    me.raw = 200;
+    const repositroy: IBusiness_UnitOfWorkRepositroy<UserModel> =  me.model as User_Repository;
+    let result : UserModel | null = await repositroy.get(id);
+    if(result == null) {
+      me.raw = 1002;
+      return Object.create(null);
+    }
+    let keys = new Keys();
+    data.id = result.id;
+    // data.trueName = result.trueName;
+    data.createTime = (result.createTime as Date).getTime();
+    data.key = result.key;
+    data.type = result.type;
+    // data.avatar = result.avatar;
+    data.password = data.password && keys.parse({ str : data.password, key : result.key }, true) || result.password;
+    await repositroy.modify(data);
+    data.key = '';
+    data.password = '';
+    return data;
   }
 
   public async patch (id: Id, data: Partial<UserModel>, params?: Params | undefined): Promise<UserModel | UserModel[]> {

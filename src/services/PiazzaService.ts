@@ -43,11 +43,14 @@ export class PiazzaService extends  AbstructService<PiazzaModel> {
         me.raw = 200;
         let page = params?.query && params.query.page || 1;
         let limit = params?.query && params.query.limit || 50;
+        let uid = params?.query && params.query.uid || '';
         const repositroy: IBusiness_UnitOfWorkRepositroy<PiazzaModel> =  me.model as Piazza_Repository;
         const expression = () => {
-          return {
-            orderBy : [['p.createTime', 'desc']]
-          }
+            let andWhere: { [key : string]: any } | null =  uid ? { uid } : null;
+            return {
+                andWhere,
+                orderBy : [['p.createTime', 'desc']]
+            }
         }
         let result = await repositroy.getConditionForPage(expression, page, limit);
         return result;

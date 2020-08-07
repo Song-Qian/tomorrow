@@ -56,8 +56,7 @@ export default class Login extends tsx.Component<any> {
 
                 let { 'User/login' : login } = mapActions(['User/login']);
                 await login.apply(me, [ result.body.data ]);
-                
-                me.$router.push({ name : 'main' })
+                me.$router.push({ name : 'main' });
                 return;
             }
             me.$message.error("验证未能通过。");

@@ -26,6 +26,13 @@
             io.emit('sysonline', [...users.values()]);
         })
 
+        socket.on('sysModifyUser', (u) => {
+            let users : Map<string, any> = app.get("userLists");
+            if(!users.has(socket.conn.id)) {
+                users.set(socket.conn.id, u);
+            }
+        })
+
         socket.on('disconnect', (reason) => {
             if(reason === 'transport close') {
                 let users : Map<string, any> = app.get("userLists");

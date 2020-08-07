@@ -37,6 +37,12 @@ export default class {
           path : 'piazza',
           component : () => import('~/views/Ad/index'),
           meta : { requiredAuth : true }
+        },
+        {
+          name : 'settings',
+          path : 'settings',
+          component : () => import('~/views/Settings/index'),
+          meta : { requiredAuth : true }
         }
       ]
     },

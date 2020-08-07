@@ -21,7 +21,7 @@
             background-position: center center;
             background-size: 100% auto;
             box-shadow: 0px 1px 3px 1px rgba(0,0,0,.5);
-            z-index: 9999;
+            z-index: 99;
             position: relative;
 
             > .piazza-name {
@@ -56,21 +56,19 @@
             overflow-y: auto;
             height: calc(100% - 260px);
             background-color: #f8f8f8;
+            scrollbar-color: transparent transparent;
 
-            &::-webkit-scrollbar,
-            &::-moz-scrollbar {
+            &::-webkit-scrollbar {
                 width: 8px;
             }
     
-            &::-webkit-scrollbar-thumb,
-            &::-moz-scrollbar-thumb {
+            &::-webkit-scrollbar-thumb {
                 width: 8px;
                 border-radius: 4px;
                 background-color: #b9b9b9;
             }
     
-            &::-webkit-scrollbar-track,
-            &::-moz-scrollbar-track {
+            &::-webkit-scrollbar-track {
                 width: 8px;
                 border-radius: 4px;
                 background-color: #eee;

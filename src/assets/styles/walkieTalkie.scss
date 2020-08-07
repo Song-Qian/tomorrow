@@ -80,21 +80,19 @@
         overflow-y: auto;
         background-color: #fff;
         box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,.4);
+        scrollbar-color: transparent transparent;
 
-        &::-webkit-scrollbar,
-        &::-moz-scrollbar {
+        &::-webkit-scrollbar {
             width: 8px;
         }
 
-        &::-webkit-scrollbar-thumb,
         &::-webkit-scrollbar-thumb {
             width: 8px;
             border-radius: 4px;
             background-color: #b9b9b9;
         }
 
-        &::-webkit-scrollbar-track,
-        &::-moz-scrollbar-track {
+        &::-webkit-scrollbar-track {
             width: 8px;
             border-radius: 4px;
             background-color: #eee;

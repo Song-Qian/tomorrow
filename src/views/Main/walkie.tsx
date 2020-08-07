@@ -89,6 +89,13 @@ export default class Walkie extends tsx.Component<any> {
         me.relatively.y = e.clientY - me.walkieWindow.offsetTop;
     }
 
+    protected updated() {
+        let me = this;
+        me.$nextTick(() => {
+            me.walkieMessageBox.scrollTop  = me.walkieMessageBox.scrollHeight;
+        })
+    }
+
     protected mounted() {
         let me = this;
         me.walkieTalkieSocket && me.walkieTalkieSocket.on('empty user', me.emptyUserMessage);

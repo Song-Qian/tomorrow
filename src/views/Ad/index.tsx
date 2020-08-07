@@ -133,6 +133,16 @@
         }
     }
 
+    protected nothing() {
+        let me = this;
+        me.$message({ 
+            type : "info", 
+            customClass : "tomorrow-message", 
+            message : "功能正努力研发...", 
+            dangerouslyUseHTMLString : true
+        });
+    }
+
     protected async getPiazzaList() {
         let me = this;
         let result : any = await me.$http.get(
@@ -176,9 +186,9 @@
                 { piazzaImage }
                 <el-row type="flex" justify="center" align="middle">
                     <el-col span="24">
-                        <i class="el-icon-star-off" style='margin-left: 10px; cursor: pointer;' />
-                        <i class="el-icon-position" style='margin-left: 10px; cursor: pointer;' />
-                        <i class="el-icon-chat-dot-square" style='margin-left: 10px; cursor: pointer;' />
+                        <i class="el-icon-star-off" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing } />
+                        <i class="el-icon-position" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing } />
+                        <i class="el-icon-chat-dot-square" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing } />
                     </el-col>
                 </el-row>
             </el-card>)
@@ -212,9 +222,9 @@
                             <div class="piazza-list-card-propagate" style={{ backgroundImage: "url(/assets/images/tomorrow.jpg)" }}></div>
                             <el-row type="flex" justify="center" align="middle">
                                 <el-col span="24">
-                                    <i class="el-icon-star-off" style='margin-left: 10px; cursor: pointer;' />
-                                    <i class="el-icon-position" style='margin-left: 10px; cursor: pointer;' />
-                                    <i class="el-icon-chat-dot-square" style='margin-left: 10px; cursor: pointer;' />
+                                    <i class="el-icon-star-off" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing }  />
+                                    <i class="el-icon-position" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing } />
+                                    <i class="el-icon-chat-dot-square" style='margin-left: 10px; cursor: pointer;' onClick={ me.nothing }  />
                                 </el-col>
                             </el-row>
                         </el-card>

@@ -101,7 +101,7 @@ import { RepositoryIdentifier } from '../../inject_type'
 
       if(orderBy) {
         for(let [field, order] of orderBy) {
-          queryBuilder = queryBuilder.orderBy(field, order);
+          queryBuilder = queryBuilder.orderBy(field, order || 'asc');
         }
       }
 
