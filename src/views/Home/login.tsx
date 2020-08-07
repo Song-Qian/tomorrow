@@ -45,7 +45,7 @@ export default class Login extends tsx.Component<any> {
             if(valid) {
                 var keys = new Keys();
                 let result : any = await me.$http.get(
-                    (RESTFULAPI.injective.Api as any).User.find, 
+                    (RESTFULAPI.injective.Api as any).UserLogin, 
                     { params : { userName : me.user.username, password :  keys.SHA(me.user.password, true) } },
                     { emulateHTTP: true, emulateJSON: false }
                 );

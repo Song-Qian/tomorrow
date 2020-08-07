@@ -5,7 +5,6 @@
  *  Description : 示例 User状态模块
  */
 import { Getter, Module, GetterTree, MutationTree, ActionTree, ActionContext } from 'vuex'
-import Vue from 'vue'
 
 export default class User<S, R> implements Module<S, R> {
 

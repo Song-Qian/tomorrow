@@ -1,0 +1,163 @@
+.piazza {
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    animation: tomorrow-slide-up .5s linear 0s 1 normal none;
+
+    > .piazza-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 50px 50px 0px 0px;
+        box-shadow: 0px 0px 7px 3px rgba(0,0,0,0.3);
+    
+        > .piazza-screen {
+            width : 100%;
+            height: 260px;
+            border-radius: 50px 50px 0px 0px;
+            background-image: url(../images/tomorrow.jpg);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% auto;
+            box-shadow: 0px 1px 3px 1px rgba(0,0,0,.5);
+            z-index: 9999;
+            position: relative;
+
+            > .piazza-name {
+                width: 100%;
+                top: 50%;
+                position: absolute;
+                font-weight: bold;
+                color: #ffffff;
+                text-align: center;
+                margin-block-start: 0px;
+                margin-block-end: 0px;
+                transform: translateY(-50%);
+            }
+
+            > .piazza-avatar {
+                width:66px;
+                height:66px;
+                bottom: 0;
+                left: 50%;
+                z-index: 999;
+                position: absolute;
+                border-radius: 33px;
+                box-sizing: border-box;
+                border:3px solid #f8f8f8;
+                transform: translate(-50%, 50%);
+                box-shadow: 0px 0px 5px 2px rgba(0,0,0,.3);
+            }
+        }
+
+        > .piazza-list {
+            width: 100%;
+            overflow-y: auto;
+            height: calc(100% - 260px);
+            background-color: #f8f8f8;
+
+            &::-webkit-scrollbar,
+            &::-moz-scrollbar {
+                width: 8px;
+            }
+    
+            &::-webkit-scrollbar-thumb,
+            &::-moz-scrollbar-thumb {
+                width: 8px;
+                border-radius: 4px;
+                background-color: #b9b9b9;
+            }
+    
+            &::-webkit-scrollbar-track,
+            &::-moz-scrollbar-track {
+                width: 8px;
+                border-radius: 4px;
+                background-color: #eee;
+                box-shadow: inset 1px 0px 3px 0px #cecece;
+            }
+
+            .piazza-list-card {
+                width: calc(100% - 20px);
+                margin-left: auto; 
+                margin-right: auto; 
+                margin-bottom: 30px;
+                position: relative;
+                background-color: #fff;
+
+                &:before {
+                    content: ' ';
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 120%;
+                    height: 120%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(255, 255, 255, .5);
+                    filter: blur(20px);
+                    z-index: -1;
+                }
+
+                .piazza-list-card-propagate {
+                    width: 100%;
+                    height: 360px;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: auto 100%;
+                }
+            }
+            
+            > .piazza-add {
+                width:100%;
+                padding: 20px;
+                cursor: pointer;
+                text-align: center;
+                box-sizing: border-box;
+
+                > p {
+                    width: 100%;
+                    height: 40px;
+                    font-size: 32px;
+                    color: #C0C4CC;
+                    text-align: center;
+                    margin-block-start: 20px;
+                    margin-block-end: 10px;
+                }
+
+                > i {
+                    font-size: 36px;
+                }
+            }
+        }
+
+    }
+
+    .piazza-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .piazza-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+
+    .piazza-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+
+    .piazza-upimage {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+    
+}

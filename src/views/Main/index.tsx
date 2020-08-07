@@ -56,8 +56,8 @@
     protected async getUserList() : Promise<void> {
         const me = this;
         let result : any =  await me.$http.get(
-            (RESTFULAPI.injective.Api as any).User.list, 
-            { params : { page : 1,  limit :  10 } },
+            (RESTFULAPI.injective.Api as any).User, 
+            { params : { page : 1,  limit :  999 } },
             { emulateHTTP: true, emulateJSON: false }
         );
         
@@ -89,12 +89,6 @@
         tsx.modifiers.stop(fn)(e);
     }
 
-    protected receiveMessage(fromId: string, message: string, time : any) {
-        let me = this;
-        let { 'WalkieTalkie/commitNewWalkie' : commitNewWalkie } = mapActions(['WalkieTalkie/commitNewWalkie']);
-        commitNewWalkie.apply(me, [{ fromId, type : 'from', message : message, ready : false }]);
-    }
-
     protected handlerWalkieClose(id: any) {
         let me = this;
         me.walkies = me.walkies.filter(it => it !== id);
@@ -113,7 +107,6 @@
 
     protected mounted() {
         let me = this;
-        me.walkieTalkieSocket && me.walkieTalkieSocket.on('from', this.receiveMessage);
         me.getUserList();
         document.onclick = (e) => {
             me.hasSearch = false;

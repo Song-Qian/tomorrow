@@ -7,3 +7,4 @@
 export { default as User } from './code/User_Module'
 export { default as Sys } from './code/Sys_Module'
 export { default as WalkieTalkie } from './code/WalkieTalkie_Module'
+export { default as Piazzas } from './code/Piazzas_Module'

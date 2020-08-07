@@ -10,6 +10,7 @@ import configuration from '@feathersjs/configuration'
 import knex from 'knex'
 import { IRepository } from '../IRepository'
 import { User_Repository } from '../implements/User_Repository'
+import { Piazza_Repository } from '../implements/Piazza_Repository'
 import { RepositoryIdentifier } from '../../inject_type'
 
 export default class RepositoryAsyncRssesolverModule extends AsyncContainerModule {
@@ -28,6 +29,7 @@ export default class RepositoryAsyncRssesolverModule extends AsyncContainerModul
       }).inSingletonScope()
 
       bind<IRepository>(RepositoryIdentifier.UserRepository).to(User_Repository)
+      bind<IRepository>(RepositoryIdentifier.PiazzaRepository).to(Piazza_Repository)
     }
   }
 }

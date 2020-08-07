@@ -6,7 +6,9 @@
  */
 import { AsyncContainerModule, interfaces } from 'inversify'
 import { UserModel } from '../../model/UserModel'
+import { PiazzaModel } from '~/model/PiazzaModel'
 import { UserLoginService } from '../UserLoginService'
+import { PiazzaService } from '../PiazzaService'
 import { UserService } from '../UserService'
 import { ServiceMethods } from '@feathersjs/feathers'
 import { ServiceIdentifier } from '../../inject_type'
@@ -28,6 +30,7 @@ export default class ServiceAsyncResolverModule extends AsyncContainerModule {
 
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserLoginService).to(UserLoginService)
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserService).to(UserService)
+      bind<ServiceMethods<PiazzaModel>>(ServiceIdentifier.PiazzaService).to(PiazzaService)
 
     }
   }

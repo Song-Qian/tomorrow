@@ -8,6 +8,7 @@ import { Business_UnitRepositroy } from './Business_UnitRepositroy'
 import { UserModel } from '../../model/UserModel'
 import { injectable } from 'inversify'
 import { QueryContext, ModelOptions } from 'objection';
+import { Piazza_Repository } from './Piazza_Repository';
 
 @injectable()
  // tslint:disable-next-line: class-name
@@ -48,7 +49,16 @@ import { QueryContext, ModelOptions } from 'objection';
   }
 
   static get relationMappings (): any {
-    return {}
+    return {
+      piazzas : {
+        relation: this.HasManyRelation,
+        modelClass: Piazza_Repository,
+        join : {
+          from : 'users.id',
+          to : 'piazza.uid'
+        }
+      }
+    }
   }
 
   $beforeInsert(queryContext : QueryContext) {

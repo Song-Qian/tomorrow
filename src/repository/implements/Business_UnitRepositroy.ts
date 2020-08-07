@@ -31,7 +31,7 @@ import { RepositoryIdentifier } from '../../inject_type'
     try {
       trx = await transaction.start(this.dbContext)
       // tslint:disable-next-line: await-promise
-      let result = await this.dbContext.select('*').from((this.constructor as any).tableName)
+      let result = await this.dbContext.select(trx).from((this.constructor as any).tableName)
       // tslint:disable-next-line: await-promise
       await trx.commit()
       return result
@@ -81,6 +81,7 @@ import { RepositoryIdentifier } from '../../inject_type'
       let orWhere = expression().orWhere;
       let WhereNot = expression().WhereNot;
       let orWhereNot = expression().orWhereNot;
+      let orderBy = expression().orderBy;
       let queryBuilder = (this.constructor as any).query(trx);
       if(andWhere) {
         queryBuilder = queryBuilder.andWhere(andWhere);
@@ -97,6 +98,13 @@ import { RepositoryIdentifier } from '../../inject_type'
       if(orWhereNot) {
         queryBuilder = queryBuilder.orWhereNot(orWhereNot);
       }
+
+      if(orderBy) {
+        for(let [field, order] of orderBy) {
+          queryBuilder = queryBuilder.orderBy(field, order);
+        }
+      }
+
       let result = await queryBuilder.limit(limit).offset((page - 1) * limit);
       return result as T[];
     } catch(e) {

@@ -20,6 +20,7 @@ export default class TomorrowApp extends tsx.Component<any> {
     super()
     this.SysSocket.on("sysonline", this.handlerOnLineEvent.bind(this.SysSocket, this));
     this.SysSocket.on("sysunline", this.handlerUnLineEvent.bind(this.SysSocket, this));
+    this.SysSocket.on("piazza_publish", this.handlerPiazzaPublish.bind(this.SysSocket, this));
   }
 
   private get SysSocketIO() {
@@ -41,6 +42,11 @@ export default class TomorrowApp extends tsx.Component<any> {
   private handlerUnLineEvent(me, users) {
     let { 'Sys/updateUsers' : updateOnlineUsers } = mapActions(['Sys/updateUsers']);
     updateOnlineUsers.apply(me,[users]);
+  }
+
+  private handlerPiazzaPublish(me, data) {
+    let { 'Piazzas/addNewPiazza' : addNewPiazza } = mapActions(['Piazzas/addNewPiazza']);
+    addNewPiazza.apply(me, [data]);
   }
 
   protected render (): JSX.Element {

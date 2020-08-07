@@ -8,7 +8,9 @@
 import { ContainerModule, interfaces } from 'inversify'
 import { UserLoginService } from '../UserLoginService'
 import { UserService } from '../UserService'
+import { PiazzaService } from '../PiazzaService'
 import { UserModel } from '../../model/UserModel'
+import { PiazzaModel } from '../../model/PiazzaModel'
 import { ServiceMethods } from '@feathersjs/feathers'
 import { ServiceIdentifier } from '../../inject_type'
 
@@ -29,6 +31,7 @@ export default class ServiceSynchResolverModule extends ContainerModule {
 
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserLoginService).to(UserLoginService)
       bind<ServiceMethods<UserModel>>(ServiceIdentifier.UserService).to(UserService)
+      bind<ServiceMethods<PiazzaModel>>(ServiceIdentifier.PiazzaService).to(PiazzaService)
 
     }
   }

@@ -30,7 +30,13 @@ export default class {
           name : 'main',
           path : 'main',
           component : () => import('~/views/Main/index'),
-          meta : { requiredAuth : true },
+          meta : { requiredAuth : true }
+        },
+        {
+          name : 'piazza',
+          path : 'piazza',
+          component : () => import('~/views/Ad/index'),
+          meta : { requiredAuth : true }
         }
       ]
     },

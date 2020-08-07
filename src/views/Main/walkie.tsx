@@ -9,7 +9,7 @@ import * as tsx from 'vue-tsx-support'
 import { Component, Prop, Emit, Ref } from 'vue-property-decorator'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
-import RESTFULAPI from '../../utils/RestfulApi'
+import RESTFULAPI from '~/utils/RestfulApi'
 
 import "vue-tsx-support/enable-check"
 import { UserModel } from '~/model/UserModel'
@@ -63,7 +63,7 @@ export default class Walkie extends tsx.Component<any> {
 
     private async getUserInfo() {
         let me = this;
-        let result : any =  await me.$resource(`${(RESTFULAPI.injective.Api as any).User.list}{/id}`).get({ id : me.id }, { emulateHTTP : false, emulateJSON : false });
+        let result : any =  await me.$resource(`${(RESTFULAPI.injective.Api as any).User}{/id}`).get({ id : me.id }, { emulateHTTP : false, emulateJSON : false });
         if(result.body.status && result.body.code === 200) {
             me.user = result.body.data;
             return void 0;
