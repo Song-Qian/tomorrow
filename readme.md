@@ -13,8 +13,10 @@
 ## 开发环境
 **UI 使用**
 `vue all` `tsx-vue-support` `vue-property-decorator` `element-ui` `socket-client`
+
 **Server 端使用**
 `featherJS` `vue-server-renderer` `socket-io` `inversify`
+
 **数据库**
 `mysql2` `knex` `objection`
 
