@@ -112,4 +112,4 @@ SET FOREIGN_KEY_CHECKS = 1;
 `npm install`
 `npm run start`
 ### 启动项目
-持行命令： `node ./`
+持行命令： `node ./lib`
