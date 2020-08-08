@@ -83,8 +83,8 @@
         let me = this;
         let { 'User/out' : out } = mapActions(['User/out']);
         out.apply(me); 
-        me.walkieTalkieSocket.close();
         me.SysSocket.close();
+        me.walkieTalkieSocket.close();
         me.$router.push({ name : 'login' });
     }
 

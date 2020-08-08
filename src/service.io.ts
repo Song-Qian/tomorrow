@@ -34,7 +34,7 @@
         })
 
         socket.on('disconnect', (reason) => {
-            if(reason === 'transport close') {
+            if(['client namespace disconnect', 'transport close'].indexOf(reason) > -1) {
                 let users : Map<string, any> = app.get("userLists");
                 if(users.has(socket.conn.id)) {
                     if(!users.delete(socket.conn.id)) {
@@ -75,7 +75,7 @@
         })
 
         socket.on('disconnect', (reason) => {
-            if(reason === 'transport close') {
+            if(['client namespace disconnect', 'transport close'].indexOf(reason) > -1) {
                 const namespaceName = socket.nsp.name;
                 const id : any = namespaceName.match(/([a-z0-9]{32})/g);
                 if(userSockets.has(id[0])) {
