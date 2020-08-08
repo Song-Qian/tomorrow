@@ -106,6 +106,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 ```
 
 ### 编译项目
-持行命令： `npm run start`
+持行命令： 
+`npm install`
+`npm run start`
 ### 启动项目
 持行命令： `node ./`
